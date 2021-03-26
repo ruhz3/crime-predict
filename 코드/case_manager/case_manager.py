@@ -26,6 +26,8 @@ CRIME_STATS = [
     [0.4602, 0.9454, 0.9459, 0.9973, 1.0000],
     [0.5089, 0.9531, 0.9535, 0.9986, 1.0000]
 ]
+MONTH_DAYS = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
+              7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
 
 
 # 그리드 이미지를 배열로 변환
@@ -44,7 +46,8 @@ for i in range(WIDTH):
 
 # 엑셀 파일 생성(연도별 시트 생성)
 wb = openpyxl.Workbook()
-for y in range(2014, 2019):
+for y in range(2014, 2019 + 1):
+    print(f'{y}...')
     year = f'{y}'
     sheet = wb.create_sheet(year)
     sheet['A1'] = "Type"
@@ -71,7 +74,9 @@ for y in range(2014, 2019):
         sheet.cell(row=i, column=1).value = type
 
         # 범죄시간
-        date = "2019-" + str(random.randrange(1, 13)) + "-" + str(random.randrange(1, 31))
+        month = random.randrange(1, 13)
+        day = random.randrange(1, MONTH_DAYS[month] + 1)
+        date = f'{year}-{month}-{day}'
         time = str(random.randrange(0, 24)) + ":" + str(random.randrange(0, 60)) + ":" + str(random.randrange(0, 60))
         sheet.cell(row=i, column=2).value = date + " " + time
 
