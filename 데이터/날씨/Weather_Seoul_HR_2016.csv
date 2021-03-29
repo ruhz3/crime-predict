@@ -1,4 +1,4 @@
-Date-Time,Temperature,Rainfall,Wind Speed,Humadity,Sunshine,Snowfall,Cloud
+Date-Time,Temperature,Rainfall,Wind Speed,Humidity,Sunshine,Snowfall,Cloud
 2016-01-01 0:00,-1.9,,0.1,85,,,0
 2016-01-01 1:00,-2.1,,1.6,83,,,
 2016-01-01 2:00,-2.2,,0.4,86,,,

@@ -1,4 +1,4 @@
-Date-Time,Temperature,Rainfall,Wind Speed,Humadity,Sunshine,Snowfall,Cloud
+Date-Time,Temperature,Rainfall,Wind Speed,Humidity,Sunshine,Snowfall,Cloud
 2019-01-01 0:00,-5.5,,1,54,,,0
 2019-01-01 1:00,-5.9,,1.8,56,,,0
 2019-01-01 2:00,-6.5,,1.2,60,,,0
