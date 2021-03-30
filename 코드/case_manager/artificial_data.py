@@ -1,11 +1,18 @@
+'''
+1. 좌표를 화면에 찍고
+2. '1' + 'q' 키를 누르면
+3. 색칠된 그리드 내에서만 범죄 데이터 생성
+'''
+
 import numpy as np
 import cv2
 import random
 import openpyxl
 
 
-''' ↓ 저장할 엑셀 파일 이름 입력'''
-FILE_NAME = "crime_data_x"
+''' ↓ 저장할 엑셀 파일 이름, 연도별 경향성 데이터 수 입력'''
+FILE_NAME = "crime_data_a"
+CRIME_TOTAL = [1000, 1000, 1000, 1000, 1000, 1000]  # 2014년 - 2019년
 
 O_LATITUDE = 37.57244364
 O_LONGTITUDE = 126.96095890
@@ -17,7 +24,6 @@ HEIGHT = 32
 
 CRIME_KEY = {0: '절도', 1: '폭행', 2: '살인', 3: '강간', 4: '강도'}
 YEAR_KEY = {0: '2014', 1: '2015', 2: '2016', 3: '2017', 4: '2018', 5: '2019'}
-CRIME_TOTAL = [5231, 4954, 4584, 4184, 4030, 4327]
 CRIME_STATS = [
     # 절도    폭행     살인     강간     강도
     [0.4924, 0.9541, 0.9552, 0.9975, 1.0000],  # 2014
@@ -42,15 +48,30 @@ MONTH_DAYS = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
 # 그리드 이미지를 배열로 변환
 img = cv2.imread("grid.png", 0)
 img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
-
-
-# 배경이 아닌 그리드의 좌표만 배열에 따로 저장 [위도, 경도]
 grids = []
-result = np.zeros((HEIGHT, WIDTH, 3), dtype=np.uint8)
-for i in range(WIDTH):
-    for j in range(HEIGHT):
-        if img[j][i] != 255:
-            grids.append([j, i])
+
+# <editor-fold desc="나타나는 화면에 찍은 좌표에만 사례 랜덤하게 생성">
+# 마우스 클릭 시 GPS 좌표 출력하는 Callback 등록
+def select_grid(event, x, y, flags, param):
+    if event == cv2.EVENT_LBUTTONDBLCLK:
+        x = int(x / 10)
+        y = int(y / 10)
+        img[y][x] = 0
+        grids.append([y, x])
+        print(f'{[y, x]}')
+cv2.namedWindow("viewer")
+cv2.setMouseCallback("viewer", select_grid)
+
+# 렌더링
+while cv2.waitKey(1) != ord('q'):
+    view = np.zeros((HEIGHT, WIDTH), dtype=np.uint8)
+    for x in range(WIDTH):
+        for y in range(HEIGHT):
+            view[y][x] = img[y][x]
+    view = cv2.resize(view, (WIDTH*10, HEIGHT*10), interpolation=cv2.INTER_NEAREST)
+    cv2.imshow("viewer", view)
+# </editor-fold>
+print("Grids selected!")
 
 # 엑셀 파일 생성(연도별 시트 생성)
 wb = openpyxl.Workbook()
@@ -100,5 +121,6 @@ for year in range(6):
 wb.remove(wb['Sheet'])
 wb.save(FILE_NAME + '.xlsx')
 print('Excel file created!')
+
 
 
