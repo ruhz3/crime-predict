@@ -77,14 +77,36 @@ for year in range(6):
         # 범죄날짜 및 시간
         month = random.randrange(1, 13)
         day = random.randrange(1, MONTH_DAYS[month] + 1)
-        date = f'{YEAR_KEY[year]}-{month}-{day}'
+        if month < 10:
+            str_month = f'0{month}'
+        else:
+            str_month = f'{month}'
+        if day < 10:
+            str_day = f'0{day}'
+        else:
+            str_day = f'{day}'
+        date = f'{YEAR_KEY[year]}-{str_month}-{str_day}'
 
         n = random.random()
         for h in range(8):
             if n < CRIME_TIME[crime][h]:
                 hour = random.randrange(3*h, 3*h+4)
                 break
-        time = f'{hour}' + ":" + str(random.randrange(0, 60)) + ":" + str(random.randrange(0, 60))
+        minute = random.randrange(0, 60)
+        second = random.randrange(0, 60)
+        if hour < 10:
+            str_hour = f'0{hour}'
+        else:
+            str_hour = f'{hour}'
+        if minute < 10:
+            str_minute = f'0{minute}'
+        else:
+            str_minute = f'{minute}'
+        if second < 10:
+            str_second = f'0{second}'
+        else:
+            str_second = f'{second}'
+        time = str_hour + ":" + str_minute + ":" + str_second
         sheet.cell(row=i, column=2).value = date + " " + time
 
         # 범죄지점 : 그리드를 랜덤으로 선택하고, 그리드 내부에서 랜덤생성
