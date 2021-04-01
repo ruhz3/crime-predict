@@ -88,25 +88,15 @@ for year in range(6):
         date = f'{YEAR_KEY[year]}-{str_month}-{str_day}'
 
         n = random.random()
-        for h in range(8):
-            if n < CRIME_TIME[crime][h]:
-                hour = random.randrange(3*h, 3*h+4)
+        for k in range(8):
+            if n < CRIME_TIME[crime][k]:
+                hour = random.randrange(3*k, 3*(k+1))
                 break
-        minute = random.randrange(0, 60)
-        second = random.randrange(0, 60)
         if hour < 10:
             str_hour = f'0{hour}'
         else:
             str_hour = f'{hour}'
-        if minute < 10:
-            str_minute = f'0{minute}'
-        else:
-            str_minute = f'{minute}'
-        if second < 10:
-            str_second = f'0{second}'
-        else:
-            str_second = f'{second}'
-        time = str_hour + ":" + str_minute + ":" + str_second
+        time = str_hour + ":00:00"
         sheet.cell(row=i, column=2).value = date + " " + time
 
         # 범죄지점 : 그리드를 랜덤으로 선택하고, 그리드 내부에서 랜덤생성
