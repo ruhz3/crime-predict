@@ -47,10 +47,10 @@ img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
 # 배경이 아닌 그리드의 좌표만 배열에 따로 저장 [위도, 경도]
 grids = []
 result = np.zeros((HEIGHT, WIDTH, 3), dtype=np.uint8)
-for i in range(WIDTH):
-    for j in range(HEIGHT):
-        if img[j][i] != 255:
-            grids.append([j, i])
+for x in range(WIDTH):
+    for y in range(HEIGHT):
+        if img[y][x] != 255:
+            grids.append([y, x])
 
 # 엑셀 파일 생성(연도별 시트 생성)
 wb = openpyxl.Workbook()
