@@ -47,10 +47,10 @@ img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
 # 배경이 아닌 그리드의 좌표만 배열에 따로 저장 [위도, 경도]
 grids = []
 result = np.zeros((HEIGHT, WIDTH, 3), dtype=np.uint8)
-for i in range(WIDTH):
-    for j in range(HEIGHT):
-        if img[j][i] != 255:
-            grids.append([j, i])
+for x in range(WIDTH):
+    for y in range(HEIGHT):
+        if img[y][x] != 255:
+            grids.append([y, x])
 
 # 엑셀 파일 생성(연도별 시트 생성)
 wb = openpyxl.Workbook()
@@ -77,14 +77,26 @@ for year in range(6):
         # 범죄날짜 및 시간
         month = random.randrange(1, 13)
         day = random.randrange(1, MONTH_DAYS[month] + 1)
-        date = f'{YEAR_KEY[year]}-{month}-{day}'
+        if month < 10:
+            str_month = f'0{month}'
+        else:
+            str_month = f'{month}'
+        if day < 10:
+            str_day = f'0{day}'
+        else:
+            str_day = f'{day}'
+        date = f'{YEAR_KEY[year]}-{str_month}-{str_day}'
 
         n = random.random()
-        for h in range(8):
-            if n < CRIME_TIME[crime][h]:
-                hour = random.randrange(3*h, 3*h+4)
+        for k in range(8):
+            if n < CRIME_TIME[crime][k]:
+                hour = random.randrange(3*k, 3*(k+1))
                 break
-        time = f'{hour}' + ":" + str(random.randrange(0, 60)) + ":" + str(random.randrange(0, 60))
+        if hour < 10:
+            str_hour = f'0{hour}'
+        else:
+            str_hour = f'{hour}'
+        time = str_hour + ":00:00"
         sheet.cell(row=i, column=2).value = date + " " + time
 
         # 범죄지점 : 그리드를 랜덤으로 선택하고, 그리드 내부에서 랜덤생성

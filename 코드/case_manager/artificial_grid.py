@@ -48,30 +48,9 @@ MONTH_DAYS = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
 # 그리드 이미지를 배열로 변환
 img = cv2.imread("grid.png", 0)
 img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
+
+# 생성하고자 하는 그리드 번호 넣는다
 grids = []
-
-# <editor-fold desc="나타나는 화면에 찍은 좌표에만 사례 랜덤하게 생성">
-# 마우스 클릭 시 GPS 좌표 출력하는 Callback 등록
-def select_grid(event, x, y, flags, param):
-    if event == cv2.EVENT_LBUTTONDBLCLK:
-        x = int(x / 10)
-        y = int(y / 10)
-        img[y][x] = 0
-        grids.append([y, x])
-        print(f'{[y, x]}')
-cv2.namedWindow("viewer")
-cv2.setMouseCallback("viewer", select_grid)
-
-# 렌더링
-while cv2.waitKey(1) != ord('q'):
-    view = np.zeros((HEIGHT, WIDTH), dtype=np.uint8)
-    for x in range(WIDTH):
-        for y in range(HEIGHT):
-            view[y][x] = img[y][x]
-    view = cv2.resize(view, (WIDTH*10, HEIGHT*10), interpolation=cv2.INTER_NEAREST)
-    cv2.imshow("viewer", view)
-# </editor-fold>
-print("Grids selected!")
 
 # 엑셀 파일 생성(연도별 시트 생성)
 wb = openpyxl.Workbook()
@@ -122,11 +101,9 @@ for year in range(6):
 
         # 범죄지점 : 그리드를 랜덤으로 선택하고, 그리드 내부에서 랜덤생성
         idx = int(random.uniform(0, len(grids)))
-        x, y = grids[idx]
-        gx, gy = O_LATITUDE - x * LAT_GAP, O_LONGTITUDE + y * LONG_GAP
-        sheet.cell(row=i, column=3).value = random.uniform(gx - LAT_GAP, gx)
-        sheet.cell(row=i, column=4).value = random.uniform(gy, gy + LONG_GAP)
-        sheet.cell(row=i, column=5).value = idx
+        sheet.cell(row=i, column=3).value = 0.0
+        sheet.cell(row=i, column=4).value = 0.0
+        sheet.cell(row=i, column=5).value = grids[idx]
 
 
 # 파일 저장
