@@ -8,11 +8,30 @@ import numpy as np
 import cv2
 import random
 import openpyxl
+from const_data import *
 
+
+# 아예 랜덤 + * arificial_data.py(3000) = 실제 건수
+# * 추가 데이터 3000건 =
+# 낮 and 높인 그리드에 범죄 1500건 :
+# 낮 xor 높인 그리드에 범죄 1500건 :
+
+# 시간(0) : CCTV-경찰서, 유동인구-거주인구
+#
+#
+# 시간(1) : CCTV-경찰서, 유동인구-거주인구
+#
+#
+# 시간(2) : CCTV-경찰서, 유동인구-거주인구
+#
+#
+# 시간(3) : CCTV-경찰서, 유동인구-거주인구
+#
+#
 
 ''' ↓ 저장할 엑셀 파일 이름, 연도별 경향성 데이터 수 입력'''
-FILE_NAME = "crime_data_a"
-CRIME_TOTAL = [1000, 1000, 1000, 1000, 1000, 1000]  # 2014년 - 2019년
+FILE_NAME = "crime_data_a2"
+CRIME_TOTAL = [3000, 3000, 3000, 3000, 3000, 3000]  # 2014년 - 2019년
 
 O_LATITUDE = 37.57244364
 O_LONGTITUDE = 126.96095890
@@ -24,58 +43,22 @@ HEIGHT = 32
 
 CRIME_KEY = {0: '절도', 1: '폭행', 2: '살인', 3: '강간', 4: '강도'}
 YEAR_KEY = {0: '2014', 1: '2015', 2: '2016', 3: '2017', 4: '2018', 5: '2019'}
-CRIME_STATS = [
-    # 절도    폭행     살인     강간     강도
-    [0.4924, 0.9541, 0.9552, 0.9975, 1.0000],  # 2014
-    [0.5143, 0.9633, 0.9639, 0.9982, 1.0000],  # 2015
-    [0.4690, 0.9544, 0.9551, 0.9983, 1.0000],  # 2016
-    [0.4412, 0.9338, 0.9340, 0.9978, 1.0000],  # 2017
-    [0.4602, 0.9454, 0.9459, 0.9973, 1.0000],  # 2018
-    [0.5089, 0.9531, 0.9535, 0.9986, 1.0000]  # 2019
-]
-CRIME_TIME = [
-    # 00-03  03-06   06-09   09-12   12-15   15-18   18-21   21-24
-    [0.0791, 0.1648, 0.2440, 0.3740, 0.5383, 0.7110, 0.8756, 1.0000],  # 절도
-    [0.1387, 0.2568, 0.3242, 0.4077, 0.4980, 0.6046, 0.7539, 1.0000],  # 폭행
-    [0.0731, 0.1811, 0.2557, 0.3653, 0.4932, 0.6347, 0.8006, 1.0000],  # 살인
-    [0.1367, 0.2912, 0.3840, 0.4644, 0.5533, 0.6633, 0.8046, 1.0000],  # 강간
-    [0.1574, 0.3538, 0.4198, 0.5082, 0.6102, 0.7181, 0.8396, 1.0000]  # 강도
-]
 
-MONTH_DAYS = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
-              7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31}
 
 
 # 그리드 이미지를 배열로 변환
 img = cv2.imread("grid.png", 0)
 img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
 grids = []
-
-# <editor-fold desc="나타나는 화면에 찍은 좌표에만 사례 랜덤하게 생성">
-# 마우스 클릭 시 GPS 좌표 출력하는 Callback 등록
-def select_grid(event, x, y, flags, param):
-    if event == cv2.EVENT_LBUTTONDBLCLK:
-        x = int(x / 10)
-        y = int(y / 10)
-        img[y][x] = 0
-        grids.append([y, x])
-        print(f'{[y, x]}')
-cv2.namedWindow("viewer")
-cv2.setMouseCallback("viewer", select_grid)
-
-# 렌더링
-while cv2.waitKey(1) != ord('q'):
-    view = np.zeros((HEIGHT, WIDTH), dtype=np.uint8)
-    for x in range(WIDTH):
-        for y in range(HEIGHT):
-            view[y][x] = img[y][x]
-    view = cv2.resize(view, (WIDTH*10, HEIGHT*10), interpolation=cv2.INTER_NEAREST)
-    cv2.imshow("viewer", view)
-# </editor-fold>
-print("Grids selected!")
+result = np.zeros((HEIGHT, WIDTH, 3), dtype=np.uint8)
+for x in range(WIDTH):
+    for y in range(HEIGHT):
+        if img[y][x] != 255:
+            grids.append([y, x])
 
 # 엑셀 파일 생성(연도별 시트 생성)
 wb = openpyxl.Workbook()
+grd_switch = False
 for year in range(6):
     print(f'{YEAR_KEY[year]}...')
     sheet = wb.create_sheet(f'{YEAR_KEY[year]}')
@@ -122,7 +105,15 @@ for year in range(6):
         sheet.cell(row=i, column=2).value = date + " " + time
 
         # 범죄지점 : 그리드를 랜덤으로 선택하고, 그리드 내부에서 랜덤생성
-        idx = int(random.uniform(0, len(grids)))
+        tt = int(hour/6)
+        if grd_switch:
+            gg = DANGER_GRID_AND
+        else:
+            gg = DANGER_GRID_OR
+        grd_switch = (grd_switch == False)
+        ll = len(gg[tt])
+        ii = int(random.uniform(0, ll))
+        idx = gg[tt][ii]
         x, y = grids[idx]
         gx, gy = O_LATITUDE - x * LAT_GAP, O_LONGTITUDE + y * LONG_GAP
         sheet.cell(row=i, column=3).value = random.uniform(gx - LAT_GAP, gx)
