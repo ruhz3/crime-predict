@@ -1,3 +1,9 @@
+
+# ================================================
+# floating_data.py
+# - 동별 시간대별 유동인구를 그리드 단위에 적용
+# ================================================
+
 import numpy as np
 import cv2
 import openpyxl
@@ -19,10 +25,33 @@ COLOR_DICT = {
     12: [39, 127, 255], 13: [204, 72, 63], 14: [36, 28, 237]
 }
 
-Resident_ARR = [1970, 5380, 3000, 4070, 4850, 5070, 1680, 7940, 15090, 18320, 14890, 9670, 11320, 12160, 8500]
+TIME_DICT = {
+    0: 'Morning',
+    1: 'Afternoon',
+    2: 'Evening',
+    3: 'Midnight'
+}
+
+FLOAT_ARR = [
+    [12170,	32230,	41700,	19220],
+    [32870,	87020,	112600,	51900],
+    [18260,	48340,	62550,	28830],
+    [24350,	64450,	83410,	38450],
+    [29220,	77350,	100090,	46140],
+    [30440,	80570,	104260,	48060],
+    [10350,	27390,	35450,	16340],
+    [48700,	128920,	166820,	76900],
+    [91320,	241720,	312790,	144190],
+    [111400, 294900, 381610, 175910],
+    [90710,	240110,	310710,	143220],
+    [59050,	156310,	202270,	93240],
+    [68790,	182100,	235640,	108620],
+    [73660,	194990,	252320,	116310],
+    [51740,	136970,	177250,	81700]
+]
 
 # 그리드 이미지를 배열로 변환
-img = cv2.imread("dong.png", 1)
+img = cv2.imread("img/dong.png", 1)
 img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
 grids = []
 for x in range(WIDTH):
@@ -41,13 +70,19 @@ for i in range(15):
     grids_dong.append(new)
 
 
-def make_data():
+def make_data(time):
     global grids_dong
+    '''
+    시간대 별 유동인구를 그리드 형태로 반환
+    :param time: 0 = morning, 1 = afternoon, ...
+    :return: result : 유동인구를 포함한 그리드 numpy 배열
+    '''
+    print(f'{TIME_DICT[time]} cases to grid...')
     result = np.zeros(shape=(HEIGHT, WIDTH), dtype=int)
     for i in range(15):
         sum = 0
         # i 동, time 시간에서의 유동인구를 가져옴
-        case_num = Resident_ARR[i]
+        case_num = FLOAT_ARR[i][time]
         # i 동의 그리드 안에서
         l = len(grids_dong[i])
         for j in range(int(case_num/10)):
@@ -59,24 +94,32 @@ def make_data():
 
 
 # 시간대별, 그리드별 유동인구 정보 포함한 배열 생성
-result = make_data()
+grid_time = []
+for i in range(4):
+    grid_time.append(make_data(i))
+
 
 # 엑셀 파일 생성(연도별 시트 생성)
 wb = openpyxl.Workbook()
 sheet = wb.active
 sheet['A1'] = "Grid"
-sheet['B1'] = "Resident"
+sheet['B1'] = "Time"
+sheet['C1'] = "Float"
 
 # 엑셀 파일에 해당 정보 기록
 r = 1
 for idx in range(len(grids)):
     y, x = grids[idx]
-    sheet.cell(row=r, column=1).value = idx
-    sheet.cell(row=r, column=2).value = result[y][x]
-    r += 1
+    for t in range(4):
+        sheet.cell(row=r, column=1).value = idx
+        sheet.cell(row=r, column=2).value = TIME_DICT[t]
+        sheet.cell(row=r, column=3).value = grid_time[t][y][x]
+        r += 1
+
 # 엑셀 파일 저장
-wb.save('Resident_grid' + '.xlsx')
+wb.save('floating_grid' + '.xlsx')
 print('Excel file created!')
+
 
 
 '''
