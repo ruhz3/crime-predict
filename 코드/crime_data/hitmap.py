@@ -22,7 +22,7 @@ d = {
     1: [255, 255, 224],
     0: [255, 255, 240]
 }
-'''
+
 d = {
     7: [255, 0, 50],
     6: [255, 100, 60],
@@ -33,7 +33,13 @@ d = {
     1: [255, 200, 110],
     0: [255, 220, 120]
 }
-
+'''
+d = {
+    7: [255, 0, 50],
+    6: [255, 255, 255],
+    5: [255, 255, 255],    4: [255, 255, 255],    3: [255, 255, 255],    2: [255, 255, 255],
+    1: [255, 255, 255],
+    0: [255, 255, 255]}
 
 # 그리드 이미지를 배열로 변환
 grid = []
@@ -50,15 +56,15 @@ for x in range(WIDTH):
 grid_color = []
 histogram = np.zeros(256, np.float_)
 for i in range(GRID_NUM):
-    histogram[CRIME_PREDICT[i]] += 1
+    histogram[CRIME_PREDICT[i]] += 1  # Make histogram!
 for i in range(256):
-    histogram[i] /= GRID_NUM
+    histogram[i] /= GRID_NUM  # Normalize it!
 for i in range(1, 256):
-    histogram[i] += histogram[i-1]
+    histogram[i] += histogram[i-1]  # Accumulate it!
 for i in range(1, 256):
-    histogram[i] = round(histogram[i] * 255)
+    histogram[i] = round(histogram[i] * 255)  # Convert to int(round)!
 for i in CRIME_PREDICT:
-    key = int(histogram[i] / 32)
+    key = int(histogram[i] / 32)  # ....?
     grid_color.append(d[key])
 for i in range(GRID_NUM):
     y, x = grid[i]
@@ -68,9 +74,9 @@ for i in range(GRID_NUM):
 
 
 # 히트맵과 배경이될 지도를 사이즈 통일
-result = cv2.resize(result, dsize=(WIDTH*10, HEIGHT*10), interpolation=cv2.INTER_NEAREST_EXACT)
+result = cv2.resize(result, dsize=(WIDTH*20, HEIGHT*20), interpolation=cv2.INTER_NEAREST_EXACT)
 background = cv2.imread('img/map.png', 1)
-background = cv2.resize(background, dsize=(WIDTH*10, HEIGHT*10))
+background = cv2.resize(background, dsize=(WIDTH*20, HEIGHT*20))
 
 # 키 입력이 있을 때 마다 0.2씩 더 강하게 블렌드
 a = 0.0
