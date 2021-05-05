@@ -56,35 +56,60 @@ DONG_DICT = {
     12: '동화동', 13: '신당5동', 14: '황학동'
 }
 
-# 그리드 이미지를 배열로 변환
-img = cv2.imread("dong.png", 1)
-img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
-grids = []
-for x in range(WIDTH):
-    for y in range(HEIGHT):
-        if img[y][x][0] != 255 or img[y][x][1] != 255 or img[y][x][2] != 255:
-            grids.append([y, x])
 
-# 그리드를 동별로 분리
-grids_dong = []
-for i in range(15):
-    new = []
+# 그리드 이미지를 배열로 변환
+def get_dong_array():
+    img = cv2.imread("dong.png", 1)
+    img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
+    grids = []
     for x in range(WIDTH):
         for y in range(HEIGHT):
-            if img[y][x][0] == COLOR_DICT[i][0] and img[y][x][1] == COLOR_DICT[i][1] and img[y][x][2] == COLOR_DICT[i][2]:
-                new.append([y, x])
-    grids_dong.append(new)
+            if img[y][x][0] != 255 or img[y][x][1] != 255 or img[y][x][2] != 255:
+                grids.append([y, x])
+    # 그리드를 동별로 분리
+    grids_dong = []
+    for i in range(15):
+        new = []
+        for x in range(WIDTH):
+            for y in range(HEIGHT):
+                if img[y][x][0] == COLOR_DICT[i][0] and img[y][x][1] == COLOR_DICT[i][1] and img[y][x][2] == COLOR_DICT[i][2]:
+                    new.append([y, x])
+        grids_dong.append(new)
 
+    def coord2num(coord):
+        for i in range(len(grids)):
+            if grids[i] == coord:
+                return i
+    res = []
+    for i in range(15):
+        tmp = []
+        for j in grids_dong[i]:
+            tmp.append(coord2num(j))
+        res.append(tmp)
+    return res
 
-def coord2num(coord):
-    for i in range(len(grids)):
-        if grids[i] == coord:
-            return i
+'''
+<경찰서 위치 시각화>
+pachool = [174, 963, 467, 711, 429, 185, 311, 161, 115, 50, 231]
+jigoo = [919, 909, 679]
+seo = [406, 152]
+for i in range(len(pachool)):
+    y, x = grids[pachool[i]]
+    img[y][x][0] = 255
+    img[y][x][1] = 0
+    img[y][x][2] = 0
+for i in range(len(jigoo)):
+    y, x = grids[jigoo[i]]
+    img[y][x][0] = 0
+    img[y][x][1] = 255
+    img[y][x][2] = 0
+for i in range(len(seo)):
+    y, x = grids[seo[i]]
+    img[y][x][0] = 0
+    img[y][x][1] = 0
+    img[y][x][2] = 255
 
-
-for i in range(15):
-    print(DONG_DICT[i])
-    tmp = []
-    for j in grids_dong[i]:
-        tmp.append(coord2num(j))
-    print(tmp)
+img = cv2.resize(img, dsize=(WIDTH*20, HEIGHT*20), interpolation=cv2.INTER_NEAREST_EXACT)
+cv2.imshow('hey', img)
+cv2.waitKey()
+'''
