@@ -76,6 +76,7 @@ for i in range(0, 15):
         tmp.sort()
         SECTION.append(tmp)
         tmp = []
+print(SECTION)
 '''
 <막대 그래프로 표현>
 for s in range(3):
@@ -252,6 +253,33 @@ for x in range(WIDTH):
             img_C[y][x][1] = 200
             img_C[y][x][2] = 200
 img_C = cv2.resize(img_C, dsize=(WIDTH*10, HEIGHT*10), interpolation=cv2.INTER_NEAREST_EXACT)
+
+grey = cv2.imread("grid.png", 0)
+grey = cv2.resize(dsize=(WIDTH, HEIGHT), src=grey)
+
+num2grid = []
+grid2num = []
+for x in range(WIDTH):
+    for y in range(HEIGHT):
+        if grey[y][x] != 255:
+            num2grid.append([y, x])
+print(num2grid)
+
+final = []
+for i in range(3):
+    tmp = []
+    print(i)
+    for c in SECTION[i]:
+        y, x = num2grid[c]
+        if res_C[y][x] == 1:
+            tmp.append(c)
+    final.append(tmp)
+
+print(final)
+
+
+
+
 # 결과 맵을 확대해서 출력
 result = cv2.resize(result, dsize=(WIDTH*20, HEIGHT*20), interpolation=cv2.INTER_NEAREST_EXACT)
 cv2.imshow('res', img_C)
