@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+from point_maker import extract_points
 WIDTH = 59
 HEIGHT = 32
 
@@ -10,7 +10,7 @@ LAT_GAP = 0.000896694
 LONG_GAP = 0.001138112
 
 num2coord = []
-img = cv2.imread("grid.png", 0)
+img = cv2.imread("img/grid.png", 0)
 img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
 for x in range(WIDTH):
     for y in range(HEIGHT):
@@ -20,7 +20,6 @@ for x in range(WIDTH):
 # 최단 시간 알고리즘 구현
 from collections import defaultdict  # 유사 딕셔너리 사용
 from heapq import *  # 우선순위 큐 사용
-
 
 def shortest_path(start_node, edges, grids):
     mst = []  # 빈 list 선언
@@ -49,10 +48,12 @@ def shortest_path(start_node, edges, grids):
 
     return mst
 
-
+'''
 selected_grids = [[11, 12, 26, 40, 42, 56, 77, 78, 91, 146, 221],
                   [483, 484, 576, 577, 651, 681, 741, 802, 852, 853, 877],
                   [779, 873, 888, 938, 959, 975, 1024, 1047, 1050, 1063]]
+'''
+selected_grids = extract_points(algorithm='A', num=6)
 
 idx_result = []
 coor_result = []
@@ -111,7 +112,7 @@ rainbow_color_dict = {0: [255, 0, 0], 1: [255, 100, 0], 2: [255, 255, 0],
                       3: [0, 255, 0], 4: [0, 100, 255], 5: [0, 0, 255],
                       6: [100, 0, 255], 7: [139, 69, 19], 8: [105, 105, 105], 9: [0, 0, 0]}
 
-img = cv2.imread("grid.png", 1)
+img = cv2.imread("img/grid.png", 1)
 img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
 result = np.full((HEIGHT, WIDTH, 3), 255, np.uint8)
 

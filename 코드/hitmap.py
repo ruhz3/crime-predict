@@ -8,6 +8,8 @@ import numpy as np
 import cv2
 from const_data import *
 
+CRIME_PREDICT = SPRING_EVENING_SUNNY
+
 WIDTH = 59
 HEIGHT = 32
 GRID_NUM = 1107

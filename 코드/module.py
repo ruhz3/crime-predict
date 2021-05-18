@@ -2,17 +2,18 @@ import numpy as np
 from const_data import WIDTH, HEIGHT, img
 
 
+
 # <editor-fold desc="컨벌루션 함수">
 def conv(image, kernel, padding=1, strides=1):
-    xImgShape, yImgShape = image.shape
-    xKernShape, yKernShape = kernel.shape
+    xImgShape, yImgShape = image.shape  # 59, 32
+    xKernShape, yKernShape = kernel.shape  # 3, 3
 
-    xOutput = int(((xImgShape - xKernShape + 2 * padding) / strides) + 1)
-    yOutput = int(((yImgShape - yKernShape + 2 * padding) / strides) + 1)
+    xOutput = int(((xImgShape - xKernShape + 2 * padding) / strides) + 1)  # 59
+    yOutput = int(((yImgShape - yKernShape + 2 * padding) / strides) + 1)  # 32
     output = np.zeros((xOutput, yOutput))
 
     if padding != 0:
-        imagePadded = np.zeros((image.shape[0] + padding*2, image.shape[1] + padding*2))
+        imagePadded = np.zeros((xImgShape + padding*2, yImgShape + padding*2))
         imagePadded[int(padding):int(-1 * padding), int(padding):int(-1 * padding)] = image
     else:
         imagePadded = image

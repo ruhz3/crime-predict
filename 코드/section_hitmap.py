@@ -1,4 +1,5 @@
 from dong_clsfy import *
+import numpy as np
 import matplotlib.pyplot as plt
 
 
