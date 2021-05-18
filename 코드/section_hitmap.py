@@ -2,35 +2,6 @@ from dong_clsfy import *
 import matplotlib.pyplot as plt
 
 
-def conv(image, kernel, padding=1, strides=1):
-    xImgShape, yImgShape = image.shape
-    xKernShape, yKernShape = kernel.shape
-
-    xOutput = int(((xImgShape - xKernShape + 2 * padding) / strides) + 1)
-    yOutput = int(((yImgShape - yKernShape + 2 * padding) / strides) + 1)
-    output = np.zeros((xOutput, yOutput))
-
-    if padding != 0:
-        imagePadded = np.zeros((image.shape[0] + padding*2, image.shape[1] + padding*2))
-        imagePadded[int(padding):int(-1 * padding), int(padding):int(-1 * padding)] = image
-    else:
-        imagePadded = image
-
-    for y in range(yImgShape):
-        if y > yImgShape - yKernShape:
-            break
-        if y % strides == 0:
-            for x in range(xImgShape):
-                if x > xImgShape - xKernShape:
-                    break
-                try:
-                    if x % strides == 0:
-                        output[x, y] = (kernel * imagePadded[x: x + xKernShape, y: y + yKernShape]).sum()
-                except:
-                    break
-    return output
-
-
 # 모델이 생성한 결과 * 10
 FIRST_PREDICT = [2, 3, 2, 2, 2, 2, 2, 0, 0, 3, 2, 3, 2, 1, 2, 2, 2, 0, 0, 1, 3, 2, 2, 2, 3, 2, 3, 1, 1, 1, 2, 2, 1, 3, 1, 3, 0,
                  1, 2, 3, 1, 2, 2, 2, 2, 1, 1, 1, 0, 0, 1, 0, 0, 3, 2, 2, 3, 1, 0, 1, 1, 2, 2, 1, 2, 0, 2, 0, 0, 2, 2, 0, 0, 1,

@@ -1,10 +1,9 @@
 import cv2
 import numpy as np
-
+from module import num2coord, coord2num
 
 WIDTH = 59
 HEIGHT = 32
-
 '''
 <COLOR_DICT 생성>
 img = cv2.imread("222.png", 1)
@@ -26,19 +25,19 @@ for i in grids:
 print(new_list)
 '''
 COLOR_DICT = {0: [0, 0, 0],
-              1: [ 36,  28, 237],
+              1: [36,  28, 237],
               2: [127, 127, 127],
-              3: [ 21,   0, 136],
-              4: [ 39, 127, 255],
-              5: [ 76, 177,  34],
-              6: [  0, 242, 255],
+              3: [21,   0, 136],
+              4: [39, 127, 255],
+              5: [76, 177,  34],
+              6: [0, 242, 255],
               7: [232, 162,   0],
               8: [204,  72,  63],
               9: [176, 228, 239],
               10: [164,  73, 163],
-              11: [ 14, 201, 255],
+              11: [14, 201, 255],
               12: [201, 174, 255],
-              13: [ 87, 122, 185],
+              13: [87, 122, 185],
               14: [195, 195, 195]}
 '''
 <DONG_DICT 생성>
@@ -56,37 +55,39 @@ DONG_DICT = {
     12: '동화동', 13: '신당5동', 14: '황학동'
 }
 
-
 # 그리드 이미지를 배열로 변환
-def get_dong_array():
-    img = cv2.imread("dong.png", 1)
-    img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
-    grids = []
+img = cv2.imread("img/dong.png", 1)
+img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
+grids = []
+for x in range(WIDTH):
+    for y in range(HEIGHT):
+        if img[y][x][0] != 255 or img[y][x][1] != 255 or img[y][x][2] != 255:
+            grids.append([y, x])
+
+# 그리드를 동별로 분리
+grids_dong = []
+for i in range(15):
+    new = []
     for x in range(WIDTH):
         for y in range(HEIGHT):
-            if img[y][x][0] != 255 or img[y][x][1] != 255 or img[y][x][2] != 255:
-                grids.append([y, x])
-    # 그리드를 동별로 분리
-    grids_dong = []
-    for i in range(15):
-        new = []
-        for x in range(WIDTH):
-            for y in range(HEIGHT):
-                if img[y][x][0] == COLOR_DICT[i][0] and img[y][x][1] == COLOR_DICT[i][1] and img[y][x][2] == COLOR_DICT[i][2]:
-                    new.append([y, x])
-        grids_dong.append(new)
+            if img[y][x][0] == COLOR_DICT[i][0] and img[y][x][1] == COLOR_DICT[i][1] and img[y][x][2] == COLOR_DICT[i][2]:
+                new.append([y, x])
+    grids_dong.append(new)
 
-    def coord2num(coord):
-        for i in range(len(grids)):
-            if grids[i] == coord:
-                return i
-    res = []
-    for i in range(15):
+# 동을 구역별로 분류
+SECTION = []
+tmp = []
+for i in range(0, 15):
+    for j in grids_dong[i]:
+        tmp.append(j)
+    if i == 3 or i == 8 or i == 14:
+        tmp.sort()
+        SECTION.append(tmp)
         tmp = []
-        for j in grids_dong[i]:
-            tmp.append(coord2num(j))
-        res.append(tmp)
-    return res
+
+if __name__ == "__main__":
+    for i in SECTION:
+        print(i)
 
 '''
 <경찰서 위치 시각화>
