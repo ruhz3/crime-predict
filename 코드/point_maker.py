@@ -1,9 +1,15 @@
+# ================================================
+# point_maker.py
+# - 구역별/알고리즘별 경유지 list 생성
+# ================================================
+
 import numpy as np
 import cv2
+import copy
 from const_data import *
 from module import conv, num2coord, coord2num
 from section_maker import SECTION
-import copy
+from hitmap import *
 
 HEIGHT = 32
 WIDTH = 59
@@ -91,7 +97,6 @@ for i in range(3):
         if THRESHOLD <= key <= 255:
             res_B[y][x] = 2
 
-
 # 나온 결과를 표현할 이미지 배열 생성
 img_A = copy.deepcopy(img)
 img_B = copy.deepcopy(img)
@@ -105,7 +110,7 @@ img_A = cv2.resize(img_A, dsize=(WIDTH * 10, HEIGHT * 10), interpolation=cv2.INT
 img_B = cv2.resize(img_B, dsize=(WIDTH * 10, HEIGHT * 10), interpolation=cv2.INTER_NEAREST_EXACT)
 img_C = cv2.resize(img_C, dsize=(WIDTH * 10, HEIGHT * 10), interpolation=cv2.INTER_NEAREST_EXACT)
 
-# 최종 결과를 표현할
+# 최종 결과를 표현할 배열을 알고리즘 별로 생성
 final_A, final_B, final_C = [], [], []
 for i in range(3):
     tmp_A, tmp_B, tmp_C = [], [], []
@@ -121,25 +126,31 @@ for i in range(3):
     final_B.append(tmp_B)
     final_C.append(tmp_C)
 
+ALGOR_DICT = {
+    'A': final_A,
+    'B': final_B,
+    'C': final_C
+}
+
 
 def extract_points(algorithm, num):
-    ALGOR_DICT = {
-        'A': final_A,
-        'B': final_B,
-        'C': final_C
-    }
+    """
+    예시) extract_points('C', 5) 호출 시 구역별 경유지 반환
+         : [ [[a, b], [c, d], ... ],
+             [[e, f], [g, h], ... ],
+             [[i, j], [k, l], ... ]]
+    """
     fin = ALGOR_DICT[algorithm]
     points = [[], [], []]
     tmp = []
     for i in range(3):
         tmp = np.random.choice(np.arange(0, len(fin[i])), num, replace=False)
         for j in tmp:
-            points[i].append(coord2num[fin[i][j][0]][fin[i][j][1]])
+            points[i].append([fin[i][j][0], fin[i][j][1]])
         print(f'SECTION{i} extracted!: {points[i]}')
     return points
 
 
 if __name__ == "__main__":
     res = cv2.vconcat([img_A, img_B, img_C])
-    cv2.imshow('ABC', res)
-    cv2.waitKey()
+    view(res, 1, 'ABC')
