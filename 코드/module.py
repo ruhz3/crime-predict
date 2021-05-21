@@ -1,6 +1,11 @@
 import numpy as np
+import matplotlib as plot
 from const_data import WIDTH, HEIGHT, img
 
+
+# <editor-fold desc ="히스토그램 시각화">
+def show_histogram(arr):
+    height, width = arr.shape
 
 
 # <editor-fold desc="컨벌루션 함수">
