@@ -1,3 +1,8 @@
+# ================================================
+# testcase.py
+# - 테스트 케이스 생성
+# ================================================
+
 import numpy as np
 import random
 from section_maker import SECTION
@@ -5,7 +10,7 @@ from module import num2coord
 from const_data import *
 
 
-TESTCASE = 500
+TESTCASE = 100
 GRID_NUM = 1107
 RANDOM = [3731, 3454, 3084, 2684, 2530, 2827]
 ARTIFICIAL = [3000, 3000, 3000, 3000, 3000, 3000]
@@ -80,5 +85,6 @@ for i in range(3):
         tmp.append(point)
     test_cases.append(tmp)
 
+# 결과 출력
 for i in range(3):
     print(f'SECTION{i}({len(test_cases[i])}개) : {test_cases[i]}')

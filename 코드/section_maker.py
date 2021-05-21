@@ -1,3 +1,8 @@
+# ================================================
+# section_maker.py
+# - 구역 별로 좌표를 분할한 배열 생성
+# ================================================
+
 import cv2
 import numpy as np
 from module import num2coord, coord2num
