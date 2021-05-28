@@ -12,8 +12,8 @@ from point_maker import extract_points
 
 
 ''' ↓ 알고리즘, 포인트 개수 입력'''
-ALGORITHM = 'A'
-POINTS = 5
+ALGORITHM = 'C'
+POINTS = 9
 
 WIDTH = 59
 HEIGHT = 32
@@ -45,7 +45,7 @@ def make_distance_matrix(grids):
 def idx2coor(idx_result):
     temp = []
     for idx in idx_result:
-        y, x = idx
+        x, y = idx
         gx, gy = O_LATITUDE - x * LAT_GAP, O_LONGTITUDE + y * LONG_GAP
         string = str(gy) + "," + str(gx)
         temp.append(string)
