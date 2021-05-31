@@ -105,7 +105,8 @@ def hitmap_image(arr=None, map=None, section=False, save=False, filename=''):
         result[y][x][0] = grid_color[i][2]
         result[y][x][1] = grid_color[i][1]
         result[y][x][2] = grid_color[i][0]
-    
+
+    result = cv2.resize(result, (WIDTH*20, HEIGHT*20), interpolation=cv2.INTER_NEAREST_EXACT)
     cv2.imwrite(f'{filename}.png', result)
     return result
 
@@ -170,6 +171,6 @@ if __name__ == "__main__":
                 label = str(s) + str(t) + str(w)
                 print(label)
                 print(MODEL_DICT[label])
-                print("hitmap_" + label + ".png")
-                hitmap_image(arr=MODEL_DICT[label], save=True, filename="hitmap_" + label + ".png")
+                print("hitmap_" + label)
+                hitmap_image(arr=MODEL_DICT[label], save=True, filename="hitmap_" + label)
 '''
