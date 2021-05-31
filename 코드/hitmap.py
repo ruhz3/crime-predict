@@ -20,7 +20,7 @@ img = cv2.imread("img/grid.png", 1)
 img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
 
 
-def hitmap_image(arr=None, map=None, section=False):
+def hitmap_image(arr=None, map=None, section=False, save=False, filename=''):
     """
     히트맵 이미지를 반환합니다.
     :param arr: 범죄 예측 배열
@@ -105,7 +105,8 @@ def hitmap_image(arr=None, map=None, section=False):
         result[y][x][0] = grid_color[i][2]
         result[y][x][1] = grid_color[i][1]
         result[y][x][2] = grid_color[i][0]
-
+    
+    cv2.imwrite(f'{filename}.png', result)
     return result
 
 
