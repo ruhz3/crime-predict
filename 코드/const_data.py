@@ -1506,7 +1506,6 @@ WINTER_MIDNIGHT_RAINY = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-'''
 MODEL_DICT = {
     "000": SPRING_MORNING_SUNNY,
     "001": SPRING_MORNING_CLOUDY,
@@ -1557,7 +1556,7 @@ MODEL_DICT = {
     "331": WINTER_MIDNIGHT_CLOUDY,
     "332": WINTER_MIDNIGHT_RAINY,
 }
-'''
+
 
 # <editor-fold desc="GPS 상수">
 O_LATITUDE = 37.57244364
