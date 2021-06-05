@@ -133,21 +133,34 @@ ALGOR_DICT = {
 }
 
 
+def combination (arr, num):
+    n = len(arr)
+    r = num
+    res, tmp = 1, 1
+    for i in range(n, n-r+2):
+        res *= i
+    for i in range(1, r+1):
+        tmp *= i
+    return res / tmp
+
+
 def extract_points(algorithm, num):
     """
     예시) extract_points('C', 5) 호출 시 구역별 경유지 반환
-         : [ [[a, b], [c, d], ... ],
+         : [ [[a, b ], [c, d], ... ],
              [[e, f], [g, h], ... ],
              [[i, j], [k, l], ... ]]
     """
     fin = ALGOR_DICT[algorithm]
     points = [[], [], []]
     tmp = []
+    # 현재는 랜덤으로 개수만큼 추출 → 모든 가능한 조합 테스트
     for i in range(3):
         tmp = np.random.choice(np.arange(0, len(fin[i])), num, replace=False)
         for j in tmp:
             points[i].append([fin[i][j][0], fin[i][j][1]])
         print(f'SECTION{i} extracted!: {points[i]}')
+
     return points
 
 

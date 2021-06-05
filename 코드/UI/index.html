@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>범죄 예측 및 순찰 알고리즘</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <script>
+        $('a[data-toggle="tooltip"]').tooltip({
+            animated: 'fade',
+            placement: 'bottom',
+            html: true
+        });
+    </script>
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper" style="width:100%;">
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto"> </ul>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- 배너 -->
+                <div class="container-fluid" style="padding-bottom: 20px;">
+                    <h1 class="h3 mb-0 text-gray-800"
+                        style="font-family: 'Nanum Gothic', sans-serif; font-size: 30px; text-align: center; font-weight:bold;">
+                        범죄 데이터 기반<br>
+                        범죄 예측 및 순찰 알고리즘
+                        <hr>
+                        <p style="font-size: 15px; text-align: center;">Multimedia Engineering, Dongguk Univ.<br>
+                            'War Against Crime'</p>
+                    </h1>
+                </div>
+                <form method="get" action="SearchResult.php">
+                    <!-- 시나리오 입력 첫째줄 -->
+                    <div class="row" style="width:100%; justify-content: center;">
+
+                        <!-- 입력값 : 계절 -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                SEASON
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <select id="season" name="season" style="width:70%;">
+                                                    <option value="none" selected> </option>
+                                                    <option value=0>봄</option>
+                                                    <option value=1>여름</option>
+                                                    <option value=2>가을</option>
+                                                    <option value=3>겨울</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 입력값: 시간 -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                TIME</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                <select id="time" name="time" style="width:70%;">
+                                                    <option value="none" selected> </option>
+                                                    <option value=0>아침</option>
+                                                    <option value=1>오후</option>
+                                                    <option value=2>저녁</option>
+                                                    <option value=3>심야</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- 시나리오 입력 둘째줄 -->
+            <div class="row" style="width:100%; justify-content: center;">
+                <!-- 입력값 : 날씨 -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        WEATHER</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        <select id="weather" name="weather" style="width:70%;">
+                                            <option value="none" selected></option>
+                                            <option value=0>맑음</option>
+                                            <option value=1>흐림</option>
+                                            <option value=2>눈/비</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-cloud-sun-rain fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 입력값 : 구역 -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        SECTION
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                        <select id="section" name="section" style="width:70%;">
+                                            <option value="none" selected></option>
+                                            <option value=0>0</option>
+                                            <option value=1>1</option>
+                                            <option value=2>2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-map-marked-alt fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 검색 버튼 -->
+            <div class="row" style="margin:auto; padding-bottom:100px;">
+                <button class="btn btn-secondary" type="submit" data-dismiss="modal">
+                    EXECUTE
+                </button>
+
+            </div>
+
+            </form>
+            <!-- Content Row -->
+            <div class="row" style="width:100%; justify-content: center;">
+
+                <!-- Area Chart -->
+                <div class="col-xl-8 col-lg-7" style="width:80%;">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">About</h6>
+                        </div>
+                        <div class="card-body" style="font-family: 'Nanum Gothic', sans-serif; font-size: 18px;">
+                            <div class="text-center">
+                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 60%;"
+                                    src="img/pic01.png" alt="...">
+                            </div>
+                            <p style="text-align:center;">
+                                중구에서의 범죄를 예측하고 효율적인 순찰 경로를 찾아보세요!<br>
+                                해당 프로그램은 중구의 날씨, 유동인구, 경찰서 위치, CCTV 개수 등<br>
+                                다양한 데이터를 활용하여 각 지점별 범죄를 예측합니다.<br>
+                                <br>
+                                범죄의 예측 결과를 바탕으로 순찰 경로를 구성하고,<br>
+                                실시간 교통정보를 반영하여 최적의 경로를 화면에 출력합니다.<br>
+                                예상 초동조치 시간, 경로 순회시간를 확인할 수도 있습니다.<br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 플로우차트
+            <div class="container-fluid" style="padding-bottom: 20px; text-align:center;">
+                <div>
+                    <img src="img/flowchart.png" style="width:90%;">
+                </div>
+            </div>
+            -->
+
+
+            <!-- Bootstrap core JavaScript-->
+            <script src="vendor/jquery/jquery.min.js"></script>
+            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Core plugin JavaScript-->
+            <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+            <!-- Custom scripts for all pages-->
+            <script src="js/sb-admin-2.min.js"></script>
+
+            <!-- Page level plugins -->
+            <script src="vendor/chart.js/Chart.min.js"></script>
+
+            <!-- Page level custom scripts -->
+            <script src="js/demo/chart-area-demo.js"></script>
+            <script src="js/demo/chart-pie-demo.js"></script>
+
+</body>
+
+</html>

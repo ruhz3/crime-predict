@@ -41,7 +41,7 @@ def conv(image, kernel, padding=1, strides=1):
     output = np.zeros((xOutput, yOutput))
 
     if padding != 0:
-        imagePadded = np.zeros((xImgShape + padding*2, yImgShape + padding*2))
+        imagePadded = np.zeros((xImgShape + padding * 2, yImgShape + padding * 2))
         imagePadded[int(padding):int(-1 * padding), int(padding):int(-1 * padding)] = image
     else:
         imagePadded = image
