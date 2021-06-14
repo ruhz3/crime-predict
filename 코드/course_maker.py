@@ -154,7 +154,7 @@ def main():
     startpoints_f = open("startpoints.txt", 'w')
 
     waypoints_f.write("$waypoints = array(\n")
-    startpoints_f.write("$startpoints = array(\n")
+    startpoints_f.write("$start = array(\n")
 
     # Instantiate the data
     # season
@@ -205,11 +205,11 @@ def main():
                 for i in range(0, 3):
                     # section
                     waypoints_f.write("\t\t\t\tarray(\n")
-                    startpoints_f.write("\t\t\t\tarray(\n")
 
                     # A algorithm
                     waypoints_f.write("\t\t\t\t\tarray(")
-                    startpoints_f.write("\t\t\t\t\tarray(" '\'' + str(A_coor_result[i][0]) + '\'')
+                    startpoints_f.write("\t\t\t\tarray(")
+                    startpoints_f.write('\'' + str(A_coor_result[i][0]) + '\',')
 
                     for j in range(1, len(A_coor_result[i])):
                         if j == len(A_coor_result[i]) - 1:
@@ -217,7 +217,6 @@ def main():
                         else:
                             waypoints_f.write('\'' + str(A_coor_result[i][j]) + '\', ')
                     waypoints_f.write('),\n')
-                    startpoints_f.write('),\n')
 
                     # B algorithm
                     # B 알고리즘 결과가 빈 배열([])이면 A 루트 가져옴.
@@ -225,7 +224,7 @@ def main():
                         B_coor_result[i] = A_coor_result[i]
 
                     waypoints_f.write("\t\t\t\t\tarray(")
-                    startpoints_f.write("\t\t\t\t\tarray(" '\'' + str(B_coor_result[i][0]) + '\'')
+                    startpoints_f.write('\'' + str(B_coor_result[i][0]) + '\',')
 
                     for j in range(1, len(B_coor_result[i])):
                         if j == len(B_coor_result[i]) - 1:
@@ -233,7 +232,6 @@ def main():
                         else:
                             waypoints_f.write('\'' + str(B_coor_result[i][j]) + '\', ')
                     waypoints_f.write('),\n')
-                    startpoints_f.write('),\n')
 
                     # C algorithm
                     # C 알고리즘 결과가 빈 배열([])이면 A 루트 가져옴.
@@ -241,7 +239,7 @@ def main():
                         C_coor_result[i] = A_coor_result[i]
 
                     waypoints_f.write("\t\t\t\t\tarray(")
-                    startpoints_f.write("\t\t\t\t\tarray(" '\'' + str(C_coor_result[i][0]) + '\'')
+                    startpoints_f.write('\'' + str(C_coor_result[i][0]) + '\'')
 
                     for j in range(len(C_coor_result[i])):
                         if j == len(C_coor_result[i]) - 1:
@@ -249,14 +247,14 @@ def main():
                         else:
                             waypoints_f.write('\'' + str(C_coor_result[i][j]) + '\', ')
                     waypoints_f.write(')\n')
-                    startpoints_f.write(')\n')
+                    #startpoints_f.write(')\n')
 
                     if i == 2:
                         waypoints_f.write('\t\t\t\t)\n')
-                        startpoints_f.write('\t\t\t\t)\n')
+                        startpoints_f.write(')\n')
                     else:
                         waypoints_f.write('\t\t\t\t),\n')
-                        startpoints_f.write('\t\t\t\t),\n')
+                        startpoints_f.write('),\n')
 
                 if w == 2:
                     waypoints_f.write('\t\t\t)\n')
@@ -281,6 +279,7 @@ def main():
 
     waypoints_f.write(');\n')
     startpoints_f.write(');\n')
+
     waypoints_f.close()
     startpoints_f.close()
 
