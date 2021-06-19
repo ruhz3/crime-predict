@@ -1557,6 +1557,12 @@ MODEL_DICT = {
     "332": WINTER_MIDNIGHT_RAINY,
 }
 
+MODEL_MATRIX = []
+for season in range(4):
+    for time in range(4):
+        for weather in range(3):
+            MODEL_MATRIX.append(MODEL_DICT[f'{season}{time}{weather}'])
+
 
 # <editor-fold desc="GPS 상수">
 O_LATITUDE = 37.57244364

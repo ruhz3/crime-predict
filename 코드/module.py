@@ -45,8 +45,6 @@ def conv(image, kernel, padding=1, strides=1):
         imagePadded[int(padding):int(-1 * padding), int(padding):int(-1 * padding)] = image
     else:
         imagePadded = image
-    print(imagePadded.shape)
-    print(yImgShape-yKernShape)
     for y in range(yImgShape):
         if y % strides == 0:
             for x in range(xImgShape):

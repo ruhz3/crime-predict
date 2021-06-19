@@ -5,10 +5,14 @@
 
 import cv2
 import numpy as np
+from varname import nameof
+
 # google OR-Tools(최적화 오픈소스 라이브러리)에서 import
 from ortools.constraint_solver import routing_enums_pb2
 from ortools.constraint_solver import pywrapcp
+
 from point_maker import extract_points
+from const_data import *
 
 
 ''' ↓ 알고리즘, 포인트 개수 입력'''
@@ -79,14 +83,18 @@ def get_routes(solution, routing, manager):
     return routes
 
 
-def main():
-    """Entry point of the program."""
-    # Instantiate the data problem.
-    
-    # 히트맵에서 thresholding 한 결과
-    selected_grids = extract_points(ALGORITHM, POINTS)
+def distance_callback(from_index, to_index):
+    """Returns the distance between the two nodes."""
+    # Convert from routing variable Index to distance matrix NodeIndex.
+    from_node = manager.IndexToNode(from_index)
+    to_node = manager.IndexToNode(to_index)
+    return data['distance_matrix'][from_node][to_node]
 
-    # 구역별로 알고리즘 실행
+def algorithm_by_section(selected_grids):
+    idx_result = []
+    coor_result = []
+
+    # 구역별로 TSP 알고리즘 실행
     for index in range(len(selected_grids)):
         # distance matrix 생성
         distance_matrix = make_distance_matrix(selected_grids[index])
@@ -103,13 +111,6 @@ def main():
 
         # Create Routing Model.
         routing = pywrapcp.RoutingModel(manager)
-
-        def distance_callback(from_index, to_index):
-            """Returns the distance between the two nodes."""
-            # Convert from routing variable Index to distance matrix NodeIndex.
-            from_node = manager.IndexToNode(from_index)
-            to_node = manager.IndexToNode(to_index)
-            return data['distance_matrix'][from_node][to_node]
 
         transit_callback_index = routing.RegisterTransitCallback(distance_callback)
 
@@ -141,8 +142,76 @@ def main():
         coor_temp = idx2coor(idx_temp)
         coor_result.append(coor_temp)
 
-    print(idx_result)
-    print(coor_result)
+    return coor_result
+
+def main():
+    """Entry point of the program."""
+
+    ### make text file
+    f = open("course.txt", 'w')
+    f.write("$waypoints = array(\n")
+
+    # Instantiate the data
+    POINTS = 9
+    for model in MODEL_MATRIX:
+        PREDICT = model
+
+        A_coor_result = []
+        B_coor_result = []
+        C_coor_result = []
+
+        # A B C 알고리즘 수행
+        for alg in ['A', 'B', 'C']:
+            ALGORITHM = alg
+
+            # 히트맵에서 thresholding 한 결과
+            selected_grids = extract_points(PREDICT, ALGORITHM)
+            for i in range(3):
+                print(f'알고리즘{alg}, 구역{i}: {selected_grids[i]}')
+
+            coor_result = []
+            coor_result = algorithm_by_section(selected_grids)
+            #print(idx_result)
+            #print(coor_result)
+            if alg == 'A':
+                A_coor_result = coor_result
+            if alg == 'B':
+                B_coor_result = coor_result
+            if alg == 'C':
+                C_coor_result = coor_result
+
+        print('A ' + str(A_coor_result))
+        print('B ' + str(B_coor_result))
+        print('C ' + str(C_coor_result))
+
+        # print course to a course.txt file
+        for i in range(0, 3):
+            f.write("\tarray(\n")
+            f.write("\t\tarray(")
+            for j in range(len(A_coor_result[i])):
+                if j == len(A_coor_result[i]) - 1:
+                    f.write('\'' + str(A_coor_result[i][j]) + '\'')
+                else:
+                    f.write('\'' + str(A_coor_result[i][j]) + '\', ')
+            f.write('),\n')
+            f.write("\t\tarray(")
+            for j in range(len(B_coor_result[i])):
+                if j == len(B_coor_result[i]) - 1:
+                    f.write('\'' + str(B_coor_result[i][j]) + '\'')
+                else:
+                    f.write('\'' + str(B_coor_result[i][j]) + '\', ')
+            f.write('),\n')
+            f.write("\t\tarray(")
+            for j in range(len(C_coor_result[i])):
+                if j == len(C_coor_result[i]) - 1:
+                    f.write('\'' + str(C_coor_result[i][j]) + '\'')
+                else:
+                    f.write('\'' + str(C_coor_result[i][j]) + '\', ')
+            f.write(')\n')
+            f.write('\t),\n')
+
+    f.write(');\n')
+    f.close()
 
 # </editor-fold>
 # <editor-fold desc="Greedy Algorithm">

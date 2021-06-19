@@ -156,21 +156,15 @@ while(a <= 1.0):
     cv2.waitKey()
     a += 0.2
 '''
-
 '''
 if __name__ == "__main__":
     # Season 0 : SPRING, 1 : SUMMER, 2 : FALL, 3 : WINTER
     for s in range(0, 4):
-
         # Time 0 : MORNING, 1 : AFTERNOON, 2: EVENING, 3 : MIDNIGHT
         for t in range(0, 4):
-
             # Weather 0 : SUNNY, 1 : CLOUDY, 3 : RAINY
             for w in range(0, 3):
-
-                label = str(s) + str(t) + str(w)
-                print(label)
-                print(MODEL_DICT[label])
-                print("hitmap_" + label)
+                
+                label = f'{s}{t}{w}'
                 hitmap_image(arr=MODEL_DICT[label], save=True, filename="hitmap_" + label)
 '''

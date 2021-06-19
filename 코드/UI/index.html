@@ -43,8 +43,9 @@
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto"> </ul>
+                    <img src="img/dgu.png" style="height:40px; width:40px; vertical-align:middle;">&nbsp;&nbsp;
+                    <!--<img src="img/mme.png" style="height:50px; width:120px; vertical-align:middle;">&nbsp;-->
+                    <img src="img/wac.png" style="height:35px;vertical-align:middle;">
                 </nav>
                 <!-- End of Topbar -->
 
@@ -55,11 +56,11 @@
                         범죄 데이터 기반<br>
                         범죄 예측 및 순찰 알고리즘
                         <hr>
-                        <p style="font-size: 15px; text-align: center;">Multimedia Engineering, Dongguk Univ.<br>
-                            'War Against Crime'</p>
+                        <p style="font-size: 15px; text-align: center;">Crime Data Based,<br>
+                            Crime Prediction & Patrol Algorithm</p>
                     </h1>
                 </div>
-                <form method="get" action="SearchResult.php">
+                <form method="get" action="SearchResult.html">
                     <!-- 시나리오 입력 첫째줄 -->
                     <div class="row" style="width:100%; justify-content: center;">
 
@@ -69,8 +70,8 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                SEASON
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"  style="font-size:large;">
+                                                계절
                                             </div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <select id="season" name="season" style="width:70%;">
@@ -96,8 +97,8 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                TIME</div>
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1"  style="font-size:large;">
+                                                시간</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                 <select id="time" name="time" style="width:70%;">
                                                     <option value="none" selected> </option>
@@ -126,8 +127,8 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                        WEATHER</div>
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style="font-size:large;">
+                                        날씨</div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                         <select id="weather" name="weather" style="width:70%;">
                                             <option value="none" selected></option>
@@ -151,8 +152,8 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                        SECTION
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1"  style="font-size:large;">
+                                        구역
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">
                                         <select id="section" name="section" style="width:70%;">
@@ -173,13 +174,11 @@
             </div>
 
             <!-- 검색 버튼 -->
-            <div class="row" style="margin:auto; padding-bottom:100px;">
+            <div class="row" style="margin:auto; padding-bottom:100px; font-family: 'Nanum Gothic', sans-serif; font-size: 30px; text-align: center; font-weight:bold;">
                 <button class="btn btn-secondary" type="submit" data-dismiss="modal">
-                    EXECUTE
+                    실행
                 </button>
-
             </div>
-
             </form>
             <!-- Content Row -->
             <div class="row" style="width:100%; justify-content: center;">
@@ -188,28 +187,97 @@
                 <div class="col-xl-8 col-lg-7" style="width:80%;">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">About</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Academic Bases</h6>
                         </div>
-                        <div class="card-body" style="font-family: 'Nanum Gothic', sans-serif; font-size: 18px;">
-                            <div class="text-center">
-                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 60%;"
-                                    src="img/pic01.png" alt="...">
+                        <div class="card-body" style="font-family: 'Nanum Gothic', sans-serif; font-size: 18px; min-height:600px;">
+                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <div class="text-center">
+                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 40%;"
+                                                src="img/pic011.png" alt="...">
+                                        </div>
+                                        <p style="text-align:center;">
+                                            <span style="background-color:lavender">중구에서의 <b>범죄를 예측</b>하고 효율적인 <b>순찰 경로</b>를 찾아보세요!</span><br>
+                                            해당 프로그램은 중구의 날씨, 유동인구, 경찰서 위치, CCTV 개수 등<br>
+                                            다양한 데이터를 활용하여 각 지점별 범죄를 예측합니다.<br>
+                                            <br>
+                                            범죄의 예측 결과를 바탕으로 순찰 경로를 구성하고,<br>
+                                            실시간 교통정보를 반영하여 최적의 경로를 화면에 출력합니다.<br>
+                                            예상 초동조치 시간, 경로 순회시간를 확인할 수도 있습니다.<br>
+                                        </p>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="text-center">
+                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 300px; height:250px;padding-bottom:10px;"
+                                                src="img/pic02.png" alt="...">
+                                        </div>
+                                        <p style="text-align:center;">
+                                            먼저 <span style="background-color:lavender">범죄예측 모델의 학습을 위한 데이터를 <b>DB에 저장</b>했습니다.</span><br>
+                                            저희가 사용한 데이터는 다음과 같습니다.
+                                        <ul style="margin-left:30%;">
+                                            <li><i style="font-size:small;">2014~2019년</i>&nbsp;&nbsp;기상청 날씨정보</li>
+                                            <li><i style="font-size:small;">2014~2019년</i>&nbsp;&nbsp;경찰청 5대 범죄 발생횟수 통계</li>
+                                            <li><i style="font-size:small;">2014~2019년</i>&nbsp;&nbsp;경찰청 시간대별 범죄 통계</li>
+                                            <li><i style="font-size:small;">2021년</i>&nbsp;&nbsp;&nbsp;행정안전부 CCTV 위치 현황</li>
+                                            <li><i style="font-size:small;">2021년</i>&nbsp;&nbsp;&nbsp;경찰청 경찰관서 위치 현황</li>
+                                            <li><i style="font-size:small;">2021년</i>&nbsp;&nbsp;&nbsp;SK빅데이터허브 유동인구 </li>
+                                            <li><i style="font-size:small;">2021년</i>&nbsp;&nbsp;&nbsp;서울특별시 거주인구 통계</li>
+                                        </ul>
+                                        </p>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="text-center">
+                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 40%;"
+                                                src="img/pic03.png" alt="...">
+                                        </div>
+                                        <p style="text-align:center;">
+                                            우선 현재의 계절, 시간, 날씨 별로 시나리오를 나눠 총 48개의 상황을 가정했습니다.<br>
+                                            그 다음, <span style="background-color:lavender">DB의 데이터셋을 이용해 <b>머신러닝ㅡ의사결정나무</b> 모델을 학습시켰습니다.</span><br>
+                                            모델은 각 시나리오에 맞게, 한 변이 100m인 격자로 구분된 지도에서,<br>
+                                            해당 범위의 범죄 발생 횟수를 예측했고, 이를 바탕으로 <b>범죄 예측 지도</b>를 완성했습니다.<br>
+                                            <br>
+                                            혼동 행렬(Confusion Matrix)를 활용해 예측 결과를 평가했으며,<br>
+                                            준수한 성능을 냄을 확인했습니다.<br>
+                                        </p>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="text-center">
+                                            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 40%;"
+                                                src="img/pic04.png" alt="...">
+                                        </div>
+                                        <p style="text-align:center;">
+                                            <span style="background-color:lavender">범죄를 예측한 결과를 이용해 순찰 경로를 구성했습니다.</span><br>
+                                            네이버 지도 API를 이용해 <b>실시간 교통정보</b>에 맞춰 경로를 최적화했습니다.<br>
+                                            기존 범죄 데이터를 이용해, 예상되는 범죄 발생 <b>초동조치 시간</b>을 계산했고,<br>
+                                            이에 대한 분석을 그래프로 표현했습니다.<br>
+                                            <br>
+                                            <span style="color:black; font-weight:bold;">이제, 시나리오를 설정하고 현재 가장 좋은 순찰 경로를 찾아보세요!</span><br><br>
+                                            <button type="button" onclick="location.href='#page-top' "style="border-radius:5px; background-color:white;">GO!</button>
+                                        </p>
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                                    data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                                    data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                                <script>
+                                    $('.carousel slide').carousel({
+                                        interval: 0
+                                    });
+                                </script>
                             </div>
-                            <p style="text-align:center;">
-                                중구에서의 범죄를 예측하고 효율적인 순찰 경로를 찾아보세요!<br>
-                                해당 프로그램은 중구의 날씨, 유동인구, 경찰서 위치, CCTV 개수 등<br>
-                                다양한 데이터를 활용하여 각 지점별 범죄를 예측합니다.<br>
-                                <br>
-                                범죄의 예측 결과를 바탕으로 순찰 경로를 구성하고,<br>
-                                실시간 교통정보를 반영하여 최적의 경로를 화면에 출력합니다.<br>
-                                예상 초동조치 시간, 경로 순회시간를 확인할 수도 있습니다.<br>
-                            </p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 플로우차트
+                <!-- 플로우차트
             <div class="container-fluid" style="padding-bottom: 20px; text-align:center;">
                 <div>
                     <img src="img/flowchart.png" style="width:90%;">
@@ -218,22 +286,22 @@
             -->
 
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="vendor/jquery/jquery.min.js"></script>
-            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <!-- Bootstrap core JavaScript-->
+                <script src="vendor/jquery/jquery.min.js"></script>
+                <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-            <!-- Core plugin JavaScript-->
-            <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+                <!-- Core plugin JavaScript-->
+                <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-            <!-- Custom scripts for all pages-->
-            <script src="js/sb-admin-2.min.js"></script>
+                <!-- Custom scripts for all pages-->
+                <script src="js/sb-admin-2.min.js"></script>
 
-            <!-- Page level plugins -->
-            <script src="vendor/chart.js/Chart.min.js"></script>
+                <!-- Page level plugins -->
+                <script src="vendor/chart.js/Chart.min.js"></script>
 
-            <!-- Page level custom scripts -->
-            <script src="js/demo/chart-area-demo.js"></script>
-            <script src="js/demo/chart-pie-demo.js"></script>
+                <!-- Page level custom scripts -->
+                <script src="js/demo/chart-area-demo.js"></script>
+                <script src="js/demo/chart-pie-demo.js"></script>
 
 </body>
 
