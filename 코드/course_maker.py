@@ -53,7 +53,6 @@ def idx2coor(idx_result):
         gx, gy = O_LATITUDE - x * LAT_GAP, O_LONGTITUDE + y * LONG_GAP
         string = str(gy) + "," + str(gx)
         temp.append(string)
-
     return temp
 
 
@@ -90,30 +89,35 @@ def distance_callback(from_index, to_index):
     to_node = manager.IndexToNode(to_index)
     return data['distance_matrix'][from_node][to_node]
 
+
 def algorithm_by_section(selected_grids):
     idx_result = []
     coor_result = []
 
     # 구역별로 TSP 알고리즘 실행
     for index in range(len(selected_grids)):
-        # distance matrix 생성
-        distance_matrix = make_distance_matrix(selected_grids[index])
+        if len(selected_grids[index]) == 0:
+            coor_result.append([])
+        else:
+            # distance matrix 생성
+            distance_matrix = make_distance_matrix(selected_grids[index])
 
-        data = create_data_model(distance_matrix)
+            data = create_data_model(distance_matrix)
 
-        # Create the routing index manager.
-        # RoutingIndexManager input
-        # distance matrix 행 개수
-        # vehicle 개수 (TSP의 경우 차량은 1대)
-        # depot인 노드
-        manager = pywrapcp.RoutingIndexManager(len(data['distance_matrix']),
-                                               data['num_vehicles'], data['depot'])
+            # Create the routing index manager.
+            # RoutingIndexManager input
+            # distance matrix 행 개수
+            # vehicle 개수 (TSP의 경우 차량은 1대)
+            # depot인 노드
+            manager = pywrapcp.RoutingIndexManager(len(data['distance_matrix']),
+                                                   data['num_vehicles'], data['depot'])
 
-        # Create Routing Model.
-        routing = pywrapcp.RoutingModel(manager)
+            # Create Routing Model.
+            routing = pywrapcp.RoutingModel(manager)
+
+            transit_callback_index = routing.RegisterTransitCallback(distance_callback)
 
         transit_callback_index = routing.RegisterTransitCallback(distance_callback)
-
         # Define cost of each arc.
         routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
 
@@ -141,7 +145,6 @@ def algorithm_by_section(selected_grids):
         # coordinate result
         coor_temp = idx2coor(idx_temp)
         coor_result.append(coor_temp)
-
     return coor_result
 
 def main():
@@ -212,6 +215,140 @@ def main():
 
     f.write(');\n')
     f.close()
+
+### make text file
+waypoints_f = open("waypoints.txt", 'w')
+startpoints_f = open("startpoints.txt", 'w')
+
+waypoints_f.write("$waypoints = array(\n")
+startpoints_f.write("$start = array(\n")
+
+# Instantiate the data
+# season
+for s in range(0, 4):
+    waypoints_f.write("\tarray(\n")
+    startpoints_f.write("\tarray(\n")
+    # time
+    for t in range(0, 4):
+        waypoints_f.write("\t\tarray(\n")
+        startpoints_f.write("\t\tarray(\n")
+        # weather
+        for w in range(0, 3):
+            waypoints_f.write("\t\t\tarray(\n")
+            startpoints_f.write("\t\t\tarray(\n")
+            model = str(s) + str(t) + str(w)
+            PREDICT = MODEL_DICT[model]
+
+            A_coor_result = []
+            B_coor_result = []
+            C_coor_result = []
+
+            # A B C 알고리즘 수행
+            for alg in ['A', 'B', 'C']:
+                ALGORITHM = alg
+                print(alg)
+
+                # 히트맵에서 thresholding 한 결과
+                print(model)
+                selected_grids = extract_points(PREDICT, ALGORITHM)
+
+                coor_result = []
+                coor_result = algorithm_by_section(selected_grids)
+
+                #print(idx_result)
+                #print(coor_result)
+                if alg == 'A':
+                    A_coor_result = coor_result
+                if alg == 'B':
+                    B_coor_result = coor_result
+                if alg == 'C':
+                    C_coor_result = coor_result
+
+            print('A ' + str(A_coor_result))
+            print('B ' + str(B_coor_result))
+            print('C ' + str(C_coor_result))
+
+            # print course to a course.txt file
+            for i in range(0, 3):
+                # section
+                waypoints_f.write("\t\t\t\tarray(\n")
+
+                # A algorithm
+                waypoints_f.write("\t\t\t\t\tarray(")
+                startpoints_f.write("\t\t\t\tarray(")
+                startpoints_f.write('\'' + str(A_coor_result[i][0]) + '\',')
+
+                for j in range(1, len(A_coor_result[i])):
+                    if j == len(A_coor_result[i]) - 1:
+                        waypoints_f.write('\'' + str(A_coor_result[i][j]) + '\'')
+                    else:
+                        waypoints_f.write('\'' + str(A_coor_result[i][j]) + '\', ')
+                waypoints_f.write('),\n')
+
+                # B algorithm
+                # B 알고리즘 결과가 빈 배열([])이면 A 루트 가져옴.
+                if len(B_coor_result[i]) == 0:
+                    B_coor_result[i] = A_coor_result[i]
+
+                waypoints_f.write("\t\t\t\t\tarray(")
+                startpoints_f.write('\'' + str(B_coor_result[i][0]) + '\',')
+
+                for j in range(1, len(B_coor_result[i])):
+                    if j == len(B_coor_result[i]) - 1:
+                        waypoints_f.write('\'' + str(B_coor_result[i][j]) + '\'')
+                    else:
+                        waypoints_f.write('\'' + str(B_coor_result[i][j]) + '\', ')
+                waypoints_f.write('),\n')
+
+                # C algorithm
+                # C 알고리즘 결과가 빈 배열([])이면 A 루트 가져옴.
+                if len(C_coor_result[i]) == 0:
+                    C_coor_result[i] = A_coor_result[i]
+
+                waypoints_f.write("\t\t\t\t\tarray(")
+                startpoints_f.write('\'' + str(C_coor_result[i][0]) + '\'')
+
+                for j in range(len(C_coor_result[i])):
+                    if j == len(C_coor_result[i]) - 1:
+                        waypoints_f.write('\'' + str(C_coor_result[i][j]) + '\'')
+                    else:
+                        waypoints_f.write('\'' + str(C_coor_result[i][j]) + '\', ')
+                waypoints_f.write(')\n')
+                #startpoints_f.write(')\n')
+
+                if i == 2:
+                    waypoints_f.write('\t\t\t\t)\n')
+                    startpoints_f.write(')\n')
+                else:
+                    waypoints_f.write('\t\t\t\t),\n')
+                    startpoints_f.write('),\n')
+
+            if w == 2:
+                waypoints_f.write('\t\t\t)\n')
+                startpoints_f.write('\t\t\t)\n')
+            else:
+                waypoints_f.write('\t\t\t),\n')
+                startpoints_f.write('\t\t\t),\n')
+
+        if t == 3:
+            waypoints_f.write('\t\t)\n')
+            startpoints_f.write('\t\t)\n')
+        else:
+            waypoints_f.write('\t\t),\n')
+            startpoints_f.write('\t\t),\n')
+
+    if s == 3:
+        waypoints_f.write('\t)\n')
+        startpoints_f.write('\t)\n')
+    else:
+        waypoints_f.write('\t),\n')
+        startpoints_f.write('\t),\n')
+
+waypoints_f.write(');\n')
+startpoints_f.write(');\n')
+
+waypoints_f.close()
+startpoints_f.close()
 
 # </editor-fold>
 # <editor-fold desc="Greedy Algorithm">
@@ -305,6 +442,8 @@ for section in range(3):
         img[y][x][1] = RAINBOW_DICT[key][1]
         img[y][x][2] = RAINBOW_DICT[key][0]
         key += 1
+        if key > 9:
+            break
 
 res = cv2.resize(img, dsize=(WIDTH*20, HEIGHT*20), interpolation=cv2.INTER_NEAREST_EXACT)
 cv2.imshow('res', res)

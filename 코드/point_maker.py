@@ -22,22 +22,17 @@ COLOR_DICT = {
     2: [10, 10, 255]
 }
 
-# 어떤 모델을 불러올지 결정
-'''
-key = input()
-PREDICT = MODEL_DICT[key]
-'''
-
-
 # 모델이 생성한 결과를 그리드 배열판에 올림
 img = cv2.imread("img/grid.png", 1)
 img = cv2.resize(dsize=(WIDTH, HEIGHT), src=img)
 map = np.zeros(shape=(HEIGHT, WIDTH))
 
-def extract_points(model_key, algorithm):
-    print("making point...")
+def extract_points(model_key, algorithm, save=False):
+    # 해당 모델의 결과를 불러온다.
     global img, map
     PREDICT = MODEL_DICT[model_key]
+
+    # 모델의 결과를 10배 해준다.
     idx = 0
     for x in range(WIDTH):
         for y in range(HEIGHT):
@@ -50,7 +45,7 @@ def extract_points(model_key, algorithm):
            [1 / 10, 2 / 10, 1 / 10],
            [1 / 10, 1 / 10, 1 / 10]]
     map = conv(map, np.array(LPF), padding=1)
-    # view(image=hitmap_image(map=map), times=10, winname='map')
+
     # A, B, C 알고리즘
     res_A = np.full((HEIGHT, WIDTH), -1)
     res_B = np.full((HEIGHT, WIDTH), -1)
@@ -128,6 +123,8 @@ def extract_points(model_key, algorithm):
                 tmp_B.append(c)
             if res_C[y][x] == 2:
                 tmp_C.append(c)
+
+        # 네이버 지도 API의 최대 경유지 수 인 15개로 제한
         if len(tmp_A) > 15:
             tmp_A = random.sample(tmp_A, 15)
         if len(tmp_B) > 15:
@@ -143,49 +140,14 @@ def extract_points(model_key, algorithm):
         'B': final_B,
         'C': final_C
     }
-    lenA, lenB, lenC = 0, 0, 0
-    for i in range(len(final_A)):
-        arr = final_A[i]
-        for j in range(len(arr)):
-            lenA += len(arr[j])
-    for i in range(len(final_B)):
-        arr = final_B[i]
-        for j in range(len(arr)):
-            lenB += len(arr[j])
-    for i in range(len(final_C)):
-        arr = final_C[i]
-        for j in range(len(arr)):
-            lenC += len(arr[j])
 
-    print(f'Writing {model_key}_?.jpg files...')
-    cv2.imwrite(f'{model_key}_A.jpg', img_A)
-    cv2.imwrite(f'{model_key}_B.jpg', img_B)
-    cv2.imwrite(f'{model_key}_C.jpg', img_C)
-    """
-    res = cv2.vconcat([img_A, img_B, img_C])
-    view(res, 1, 'ABC')
-    """
+    if save:
+        print(f'Writing {model_key}_?.jpg files...')
+        cv2.imwrite(f'{model_key}_A.jpg', img_A)
+        cv2.imwrite(f'{model_key}_B.jpg', img_B)
+        cv2.imwrite(f'{model_key}_C.jpg', img_C)
     return ALGOR_DICT[algorithm]
 
-"""
-def extract_points(algorithm, num, token):
-    print(f'{token}...!')
-    예시) extract_points('C', 5) 호출 시 구역별 경유지 반환
-         : [ [[a, b ], [c, d], ... ],
-             [[e, f], [g, h], ... ],
-             [[i, j], [k, l], ... ]]
-    fin = ALGOR_DICT[algorithm]
-    points = [[], [], []]
-    tmp = []
-
-    for i in range(3):
-        tmp = np.random.choice(np.arange(0, len(fin[i])), num, replace=False)
-        for j in tmp:
-            points[i].append([fin[i][j][0], fin[i][j][1]])
-        print(f'SECTION{i} extracted!: {points[i]}')
-
-    return points
-"""
 
 if __name__ == "__main__":
     # Season 0 : SPRING, 1 : SUMMER, 2 : FALL, 3 : WINTER
@@ -194,7 +156,6 @@ if __name__ == "__main__":
         for t in range(0, 4):
             # Weather 0 : SUNNY, 1 : CLOUDY, 3 : RAINY
             for w in range(0, 3):
-                extract_points(f'{s}{t}{w}', 'A')
-                extract_points(f'{s}{t}{w}', 'B')
-                extract_points(f'{s}{t}{w}', 'C')
-    view(res, 1, 'ABC')
+                extract_points(f'{s}{t}{w}', 'A', True)
+                extract_points(f'{s}{t}{w}', 'B', True)
+                extract_points(f'{s}{t}{w}', 'C', True)
