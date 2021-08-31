@@ -1,0 +1,33 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname=helvetica] ;
+edge [fontname=helvetica] ;
+0 [label=<resident &le; 145.0<br/>gini = 0.562<br/>samples = 885<br/>value = [513, 273, 73, 19, 4, 3]>, fillcolor="#f5ceb1"] ;
+1 [label=<police_value &le; 0.5<br/>gini = 0.5<br/>samples = 616<br/>value = [398, 173, 36, 9, 0, 0]>, fillcolor="#f2bf9a"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label=<CCTV_num &le; 3.5<br/>gini = 0.548<br/>samples = 407<br/>value = [239, 130, 29, 9, 0, 0]>, fillcolor="#f5cdb1"] ;
+1 -> 2 ;
+3 [label=<gini = 0.577<br/>samples = 335<br/>value = [182, 116, 28, 9, 0, 0]>, fillcolor="#f7d9c3"] ;
+2 -> 3 ;
+4 [label=<gini = 0.335<br/>samples = 72<br/>value = [57, 14, 1, 0, 0, 0]>, fillcolor="#eca26c"] ;
+2 -> 4 ;
+5 [label=<floating &le; 235.0<br/>gini = 0.378<br/>samples = 209<br/>value = [159, 43, 7, 0, 0, 0]>, fillcolor="#eda775"] ;
+1 -> 5 ;
+6 [label=<gini = 0.541<br/>samples = 22<br/>value = [13, 7, 2, 0, 0, 0]>, fillcolor="#f5cdb0"] ;
+5 -> 6 ;
+7 [label=<gini = 0.353<br/>samples = 187<br/>value = [146, 36, 5, 0, 0, 0]>, fillcolor="#eca36f"] ;
+5 -> 7 ;
+8 [label=<CCTV_num &le; 3.5<br/>gini = 0.658<br/>samples = 269<br/>value = [115, 100, 37, 10, 4, 3]>, fillcolor="#fdf4ed"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label=<resident &le; 315.0<br/>gini = 0.693<br/>samples = 175<br/>value = [59, 70, 30, 9, 4, 3]>, fillcolor="#f6fdec"] ;
+8 -> 9 ;
+10 [label=<gini = 0.714<br/>samples = 127<br/>value = [41, 45, 29, 8, 2, 2]>, fillcolor="#fafef6"] ;
+9 -> 10 ;
+11 [label=<gini = 0.585<br/>samples = 48<br/>value = [18, 25, 1, 1, 2, 1]>, fillcolor="#e8f9d1"] ;
+9 -> 11 ;
+12 [label=<resident &le; 355.0<br/>gini = 0.538<br/>samples = 94<br/>value = [56, 30, 7, 1, 0, 0]>, fillcolor="#f4ccaf"] ;
+8 -> 12 ;
+13 [label=<gini = 0.565<br/>samples = 84<br/>value = [46, 30, 7, 1, 0, 0]>, fillcolor="#f7dac4"] ;
+12 -> 13 ;
+14 [label=<gini = 0.0<br/>samples = 10<br/>value = [10, 0, 0, 0, 0, 0]>, fillcolor="#e58139"] ;
+12 -> 14 ;
+}

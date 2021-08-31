@@ -1,0 +1,33 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname=helvetica] ;
+edge [fontname=helvetica] ;
+0 [label=<resident &le; 115.0<br/>gini = 0.15<br/>samples = 885<br/>value = [813, 70, 2]>, fillcolor="#e78c4a"] ;
+1 [label=<CCTV_num &le; 2.5<br/>gini = 0.102<br/>samples = 597<br/>value = [565, 30, 2]>, fillcolor="#e68844"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label=<floating &le; 345.0<br/>gini = 0.124<br/>samples = 436<br/>value = [407, 28, 1]>, fillcolor="#e78a47"] ;
+1 -> 2 ;
+3 [label=<gini = 0.144<br/>samples = 360<br/>value = [332, 27, 1]>, fillcolor="#e78c4a"] ;
+2 -> 3 ;
+4 [label=<gini = 0.026<br/>samples = 76<br/>value = [75, 1, 0]>, fillcolor="#e5833c"] ;
+2 -> 4 ;
+5 [label=<police_value &le; 0.5<br/>gini = 0.037<br/>samples = 161<br/>value = [158, 2, 1]>, fillcolor="#e5833d"] ;
+1 -> 5 ;
+6 [label=<gini = 0.0<br/>samples = 100<br/>value = [100, 0, 0]>, fillcolor="#e58139"] ;
+5 -> 6 ;
+7 [label=<gini = 0.095<br/>samples = 61<br/>value = [58, 2, 1]>, fillcolor="#e68743"] ;
+5 -> 7 ;
+8 [label=<CCTV_num &le; 2.5<br/>gini = 0.239<br/>samples = 288<br/>value = [248, 40, 0]>, fillcolor="#e99559"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label=<police_value &le; 0.5<br/>gini = 0.302<br/>samples = 167<br/>value = [136, 31, 0]>, fillcolor="#eb9e66"] ;
+8 -> 9 ;
+10 [label=<gini = 0.34<br/>samples = 143<br/>value = [112, 31, 0]>, fillcolor="#eca470"] ;
+9 -> 10 ;
+11 [label=<gini = 0.0<br/>samples = 24<br/>value = [24, 0, 0]>, fillcolor="#e58139"] ;
+9 -> 11 ;
+12 [label=<police_value &le; 4.5<br/>gini = 0.138<br/>samples = 121<br/>value = [112, 9, 0]>, fillcolor="#e78b49"] ;
+8 -> 12 ;
+13 [label=<gini = 0.124<br/>samples = 120<br/>value = [112, 8, 0]>, fillcolor="#e78a47"] ;
+12 -> 13 ;
+14 [label=<gini = 0.0<br/>samples = 1<br/>value = [0, 1, 0]>, fillcolor="#39e581"] ;
+12 -> 14 ;
+}

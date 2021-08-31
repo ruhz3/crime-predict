@@ -1,0 +1,29 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname=helvetica] ;
+edge [fontname=helvetica] ;
+0 [label="CCTV_num <= 6.5\ngini = 0.165\nsamples = 41\nvalue = [60, 6]", fillcolor="#e88e4d"] ;
+1 [label="CCTV_num <= 0.5\ngini = 0.095\nsamples = 38\nvalue = [57, 3]", fillcolor="#e68843"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="floating <= 240.0\ngini = 0.142\nsamples = 26\nvalue = [36, 3]", fillcolor="#e78c49"] ;
+1 -> 2 ;
+3 [label="gini = 0.0\nsamples = 12\nvalue = [20, 0]", fillcolor="#e58139"] ;
+2 -> 3 ;
+4 [label="floating <= 745.0\ngini = 0.266\nsamples = 14\nvalue = [16, 3]", fillcolor="#ea995e"] ;
+2 -> 4 ;
+5 [label="resident <= 45.0\ngini = 0.375\nsamples = 2\nvalue = [1, 3]", fillcolor="#7bbeee"] ;
+4 -> 5 ;
+6 [label="gini = 0.0\nsamples = 1\nvalue = [1, 0]", fillcolor="#e58139"] ;
+5 -> 6 ;
+7 [label="gini = 0.0\nsamples = 1\nvalue = [0, 3]", fillcolor="#399de5"] ;
+5 -> 7 ;
+8 [label="gini = 0.0\nsamples = 12\nvalue = [15, 0]", fillcolor="#e58139"] ;
+4 -> 8 ;
+9 [label="gini = 0.0\nsamples = 12\nvalue = [21, 0]", fillcolor="#e58139"] ;
+1 -> 9 ;
+10 [label="CCTV_num <= 7.5\ngini = 0.5\nsamples = 3\nvalue = [3, 3]", fillcolor="#ffffff"] ;
+0 -> 10 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+11 [label="gini = 0.0\nsamples = 1\nvalue = [0, 3]", fillcolor="#399de5"] ;
+10 -> 11 ;
+12 [label="gini = 0.0\nsamples = 2\nvalue = [3, 0]", fillcolor="#e58139"] ;
+10 -> 12 ;
+}

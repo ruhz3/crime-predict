@@ -1,0 +1,87 @@
+// Crime Table 생성 
+create table Crime(id INT AUTO_INCREMENT, type varchar(20), date_time DATETIME, latitude DECIMAL(13,10), longitude DECIMAL(13,10), grid INT, primary key(id));
+
+// Weather Table 생성
+create table Weather(date_time DATETIME, temperature DOUBLE, rainfall DOUBLE, windspeed DOUBLE, humidity INT, sunshine DOUBLE, snowfall Double, cloud INT, primary key(date_time));
+
+// CCTV Table 생성
+create table CCTV(id INT AUTO_INCREMENT, latitude DECIMAL(13,10), longitude DECIMAL(13,10), CCTV_num INT , grid INT, primary key(id));
+
+// Police Table 생성
+create table Police(id INT AUTO_INCREMENT, latitude DECIMAL(13,10), longitude DECIMAL(13,10), grid INT, police_value INT, primary key(id));
+
+// Floating Table 생성
+create table Floating(id INT AUTO_INCREMENT, grid INT, time VARCHAR(20), population INT, primary key(id));
+
+// Resident Table 생성
+create table Resident(grid INT, population INT, primary key(grid));
+
+// Crime_Weatehr Table 생성
+create table Crime_Weather(id INT AUTO_INCREMENT, date_time DATETIME, season VARCHAR(10), time VARCHAR(10), type VARCHAR(10),  temperature DOUBLE, rainfall DOUBLE, windspeed DOUBLE, humidity INT, sunshine DOUBLE, snowfall Double, cloud INT, grid INT, primary key(id));
+
+// Grid_Join Table 생성
+create table Grid_Join(id INT AUTO_INCREMENT, grid INT, CCTV_num INT DEFAULT 0, police_value INT DEFAULT 0, resident INT DEFAULT 0, primary key(id));
+
+//Grid Table 생성
+create table Grid(id INT AUTO_INCREMENT, grid INT, CCTV_num INT DEFAULT 0, police_value INT DEFAULT 0, resident INT DEFAULT 0, time VARCHAR(10), floating INT DEFAULT 0, primary key(id));
+
+// Dataset Table 생성
+create Table Dataset(id INT AUTO_INCREMENT, date_time DATETIME, season VARCHAR(10), time VARCHAR(10), type VARCHAR(10),  temperature DOUBLE, rainfall DOUBLE, windspeed DOUBLE, humidity INT, sunshine DOUBLE, snowfall Double, cloud INT, grid INT, CCTV_num INT DEFAULT 0, police_value INT DEFAULT 0, resident INT DEFAULT 0, floating INT DEFAULT 0, primary key(id)); 
+
+// Crime_Weatehr 데이터 삽입 -> Crime, Weather 조인 
+Insert Into Crime_Weather(date_time, type, temperature, rainfall, windspeed, humidity, sunshine, snowfall, cloud, grid) Select Crime.date_time, Crime.type, Weather.temperature, Weather.rainfall, Weather.windspeed, Weather.humidity, Weather.sunshine, Weather.snowfall, Weather.cloud, Crime.grid FROM Crime, Weather Where Crime.date_time = Weather.date_time;
+
+
+// season값 추가 
+Update Crime_Weather SET season='Spring' where month(date_time) = 3 or month(date_time) = 4 or month(date_time) = 5;
+Update Crime_Weather SET season='Summer' where month(date_time) = 6 or month(date_time) = 7 or month(date_time) = 8;
+Update Crime_Weather SET season='Fall' where month(date_time) = 9 or month(date_time) = 10 or month(date_time) = 11;
+Update Crime_Weather SET season='Winter' where month(date_time) = 12 or month(date_time) = 1 or month(date_time) = 2;
+
+// time값 추가 
+Update Crime_Weather SET time='Morning' where hour(date_time) = 6 or hour(date_time) = 7 or hour(date_time) = 8 or hour(date_time) = 9 or hour(date_time) = 10 or hour(date_time) = 11;
+Update Crime_Weather SET time='Afternoon' where hour(date_time) = 12 or hour(date_time) = 13 or hour(date_time) = 14 or hour(date_time) = 15 or hour(date_time) = 16 or hour(date_time) = 17;
+Update Crime_Weather SET time='Evening' where hour(date_time) = 18 or hour(date_time) = 19 or hour(date_time) = 20 or hour(date_time) = 21 or hour(date_time) = 22 or hour(date_time) = 23;
+Update Crime_Weather SET time='Midnight' where hour(date_time) = 0 or hour(date_time) = 1 or hour(date_time) = 2 or hour(date_time) = 3 or hour(date_time) = 4 or hour(date_time) = 5;
+
+// 한영 변환
+Update Crime SET type="Assault" WHERE type="폭행";
+Update Crime SET type="Rape" WHERE type="강간";
+Update Crime SET type="Murder" WHERE type="살인";
+Update Crime SET type="Robber" WHERE type="강도";
+Update Crime SET type="Theft"  WHERE type="절도";
+
+Update Crime_Weather SET type="Assault" WHERE type="폭행";
+Update Crime_Weather SET type="Rape" WHERE type="강간";
+Update Crime_Weather SET type="Murder" WHERE type="살인";
+Update Crime_Weather SET type="Robber" WHERE type="강도";
+Update Crime_Weather SET type="Theft"  WHERE type="절도";
+
+Update Dataset SET type="Assault" WHERE type="폭행";
+Update Dataset SET type="Rape" WHERE type="강간";
+Update Dataset SET type="Murder" WHERE type="살인";
+Update Dataset SET type="Robber" WHERE type="강도";
+Update Dataset SET type="Theft"  WHERE type="절도";
+
+
+// Grid 번호 데이터 삽입 (Grid, floating, resident)
+Insert Into Grid_Join(grid) Select num From Grid_num;
+Insert Into Floating(grid) Select num From Grid_num;
+Insert Into Resident(grid) Select num From Grid_num;
+
+//CCTV 수 추가
+Update Grid_Join, (SELECT grid, SUM(CCTV_num) as CCTV_num From CCTV GROUP BY grid) as A SET Grid_Join.CCTV_num = A.CCTV_num WHERE Grid_Join.grid = A.grid;
+
+Update Grid_Join, (SELECT grid, Count(grid) as school From School GROUP BY grid) as A SET Grid_Join.School= A.school WHERE Grid_Join.grid = A.grid;
+
+//경찰서 수 추가
+Update Grid_Join, (SELECT grid, SUM(police_value) as police_value From Police GROUP BY grid) as A SET Grid_Join.police_value = A.police_value WHERE Grid_Join.grid = A.grid;
+
+//Resident 추가
+Update Grid_Join, Resident SET Grid_Join.resident = Resident.population WHERE Grid_Join.grid = Resident.grid;
+
+//Grid 테이블 값 추가
+Insert Into Grid(grid, CCTV_num, police_value, resident, time, floating, Adult, Apartment, Commercial, Detached, School, Traffic) Select Grid_Join.grid, Grid_Join.CCTV_num, Grid_Join.police_value, Grid_Join.resident, Floating.time, Floating.population, Grid_Join.Adult, Grid_Join.Apartment, Grid_Join.Commercial, Grid_Join.Detached, Grid_Join.School, Grid_Join.Traffic FROM Grid_Join, Floating WHERE Grid_Join.grid = Floating.grid; 
+
+//Dataset 테이블 값 추가
+Insert Into Dataset(date_time, season, time, type, temperature, rainfall, windspeed, humidity, sunshine, snowfall, cloud, grid, CCTV_num, police_value, resident, floating, Adult, Apartment, Commercial, Detached, School, Traffic) Select Crime_Weather.date_time, Crime_Weather.season, Crime_Weather.time, Crime_Weather.type, Crime_Weather.temperature, Crime_Weather.rainfall, Crime_Weather.windspeed, Crime_Weather.humidity, Crime_Weather.sunshine, Crime_Weather.snowfall, Crime_Weather.cloud, Crime_Weather.grid, Grid.CCTV_num, Grid.police_value, Grid.resident, Grid.floating, Grid.Adult, Grid.Apartment, Grid.Commercial, Grid.Detached, Grid.School, Grid.Traffic FROM Grid, Crime_Weather WHERE Grid.grid = Crime_Weather.grid and Grid.time = Crime_Weather.time; 

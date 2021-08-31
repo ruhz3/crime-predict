@@ -1,0 +1,33 @@
+digraph Tree {
+node [shape=box, style="filled, rounded", color="black", fontname=helvetica] ;
+edge [fontname=helvetica] ;
+0 [label=<floating &le; 1150.0<br/>gini = 0.709<br/>samples = 885<br/>value = [328, 297, 168, 59, 23, 8, 1, 1]>, fillcolor="#fef8f5"] ;
+1 [label=<police_value &le; 0.5<br/>gini = 0.658<br/>samples = 615<br/>value = [271, 215, 94, 26, 6, 3, 0, 0]>, fillcolor="#fbede3"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label=<resident &le; 25.0<br/>gini = 0.689<br/>samples = 405<br/>value = [152, 149, 72, 23, 6, 3, 0, 0]>, fillcolor="#fffefd"] ;
+1 -> 2 ;
+3 [label=<gini = 0.673<br/>samples = 147<br/>value = [43, 66, 28, 8, 2, 0, 0, 0]>, fillcolor="#f3f9d3"] ;
+2 -> 3 ;
+4 [label=<gini = 0.685<br/>samples = 258<br/>value = [109, 83, 44, 15, 4, 3, 0, 0]>, fillcolor="#fbece2"] ;
+2 -> 4 ;
+5 [label=<floating &le; 385.0<br/>gini = 0.569<br/>samples = 210<br/>value = [119, 66, 22, 3, 0, 0, 0, 0]>, fillcolor="#f5d1b6"] ;
+1 -> 5 ;
+6 [label=<gini = 0.491<br/>samples = 104<br/>value = [68, 29, 6, 1, 0, 0, 0, 0]>, fillcolor="#f1bd98"] ;
+5 -> 6 ;
+7 [label=<gini = 0.624<br/>samples = 106<br/>value = [51, 37, 16, 2, 0, 0, 0, 0]>, fillcolor="#fae5d7"] ;
+5 -> 7 ;
+8 [label=<CCTV_num &le; 2.5<br/>gini = 0.769<br/>samples = 270<br/>value = [57, 82, 74, 33, 17, 5, 1, 1]>, fillcolor="#fdfef7"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label=<police_value &le; 0.5<br/>gini = 0.76<br/>samples = 158<br/>value = [16, 45, 55, 22, 13, 5, 1, 1]>, fillcolor="#effded"] ;
+8 -> 9 ;
+10 [label=<gini = 0.76<br/>samples = 135<br/>value = [8, 40, 45, 22, 13, 5, 1, 1]>, fillcolor="#f5fef5"] ;
+9 -> 10 ;
+11 [label=<gini = 0.643<br/>samples = 23<br/>value = [8, 5, 10, 0, 0, 0, 0, 0]>, fillcolor="#e6fce5"] ;
+9 -> 11 ;
+12 [label=<CCTV_num &le; 7.5<br/>gini = 0.717<br/>samples = 112<br/>value = [41, 37, 19, 11, 4, 0, 0, 0]>, fillcolor="#fef8f4"] ;
+8 -> 12 ;
+13 [label=<gini = 0.73<br/>samples = 88<br/>value = [32, 25, 19, 8, 4, 0, 0, 0]>, fillcolor="#fcf1e9"] ;
+12 -> 13 ;
+14 [label=<gini = 0.594<br/>samples = 24<br/>value = [9, 12, 0, 3, 0, 0, 0, 0]>, fillcolor="#f4fad7"] ;
+12 -> 14 ;
+}
